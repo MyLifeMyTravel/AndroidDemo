@@ -29,7 +29,7 @@ public class OtherActivity extends BaseActivity {
 
     @Override
     protected int getPageLayoutID() {
-        return R.layout.activity_mixed_item;
+        return R.layout.activity_other;
     }
 
     @Override

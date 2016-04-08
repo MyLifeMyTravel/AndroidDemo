@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import com.littlejie.android.demo.manager.ActivityManager;
 import com.littlejie.android.demo.modules.base.BaseActivity;
 import com.littlejie.android.demo.modules.other.OtherActivity;
+import com.littlejie.android.demo.modules.widget.WidgetActivity;
 
 public class MainActivity extends BaseActivity {
 
@@ -36,7 +37,7 @@ public class MainActivity extends BaseActivity {
                     mDrawerLayout.closeDrawers();
                     return true;
                 } else if (item.getItemId() == R.id.navigation_widget) {
-                    item.setChecked(true);
+                    ActivityManager.startActivity(MainActivity.this, WidgetActivity.class);
                     mDrawerLayout.closeDrawers();
                     return true;
                 }
