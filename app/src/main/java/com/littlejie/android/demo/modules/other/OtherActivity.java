@@ -1,6 +1,5 @@
-package com.littlejie.android.demo.modules.mixed;
+package com.littlejie.android.demo.modules.other;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -15,7 +14,7 @@ import java.util.List;
 /**
  * Created by Lion on 2016/4/6.
  */
-public class MixedItemActivity extends BaseActivity {
+public class OtherActivity extends BaseActivity {
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
@@ -23,12 +22,18 @@ public class MixedItemActivity extends BaseActivity {
     private List<CardInfo> mLstCard;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mixed_item);
+    protected void onResume() {
+        super.onResume();
+        mAdapter.setData(mLstCard);
+    }
 
-        genData();
+    @Override
+    protected int getPageLayoutID() {
+        return R.layout.activity_mixed_item;
+    }
 
+    @Override
+    protected void initView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
         mLinearLayoutManager = new LinearLayoutManager(this);
         //一定要记得给RecyclerView设置LayoutManager，否则显示不出来
@@ -40,9 +45,13 @@ public class MixedItemActivity extends BaseActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        mAdapter.setData(mLstCard);
+    protected void initViewListener() {
+
+    }
+
+    @Override
+    protected void initData() {
+        genData();
     }
 
     private void genData() {

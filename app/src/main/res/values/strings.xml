@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AndroidDemo</string>
+    <string name="navigation_other">Other</string>
+    <string name="navigation_widget">User Widget</string>
 </resources>

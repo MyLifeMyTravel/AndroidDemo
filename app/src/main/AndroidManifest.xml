@@ -16,7 +16,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".modules.mixed.MixedItemActivity"></activity>
+        <activity android:name=".modules.other.OtherActivity"></activity>
     </application>
 
 </manifest>
