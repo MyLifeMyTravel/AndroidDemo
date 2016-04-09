@@ -11,25 +11,28 @@ import android.view.ViewGroup;
 /**
  * Created by Lion on 2016/4/8.
  */
-public class LoopViewPager extends ViewPager implements ViewPager.OnPageChangeListener {
+public class LoopViewPager extends ViewPager {
 
     public static final String TAG = "LoopViewPager";
 
     private LoopPagerAdapterWrapper mWrapper = null;
+    private OnPageChangeListener mOnLoopPageChangeListener;
 
     public LoopViewPager(Context context) {
         super(context);
+        super.setOnPageChangeListener(mOnPageChangeListener);
     }
 
     public LoopViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
+        super.setOnPageChangeListener(mOnPageChangeListener);
     }
 
     @Override
     public void setAdapter(PagerAdapter adapter) {
         mWrapper = new LoopPagerAdapterWrapper(adapter);
         super.setAdapter(mWrapper);
-        setCurrentItem(1);
+        setCurrentItem(0, false);
     }
 
     @Override
@@ -37,35 +40,67 @@ public class LoopViewPager extends ViewPager implements ViewPager.OnPageChangeLi
         return mWrapper == null ? 0 : mWrapper.covert2RealPosition(super.getCurrentItem());
     }
 
-    @Override
-    public void onPageSelected(int position) {
-        int realPosition = mWrapper.covert2RealPosition(position);
-        setCurrentItem(realPosition, true);
+    public void setCurrentItem(int item, boolean smoothScroll) {
+        int realItem = mWrapper.covert2InnerPosition(item);
+        super.setCurrentItem(realItem, smoothScroll);
     }
 
     @Override
-    public void onPageScrollStateChanged(int state) {
-        switch (state) {
-            case ViewPager.SCROLL_STATE_IDLE:
-                if (getCurrentItem() == mWrapper.getCount() - 1) {
-                    setCurrentItem(0);
-                } else if (getCurrentItem() == 0) {
-                    setCurrentItem(mWrapper.getCount() - 1);
-                }
-                break;
-            case ViewPager.SCROLL_STATE_DRAGGING:
-//                isAutoPlay = false;
-                break;
-            case ViewPager.SCROLL_STATE_SETTLING:
-//                isAutoPlay = true;
-                break;
+    public void setCurrentItem(int item) {
+        if (getCurrentItem() != item) {
+            setCurrentItem(item, true);
         }
     }
 
-    @Override
-    public void onPageScrolled(int position, float offset, int offsetPixels) {
-        super.onPageScrolled(position, offset, offsetPixels);
+    public void setOnLoopPageChangeListener(OnPageChangeListener onPageChangeListener) {
+        this.mOnLoopPageChangeListener = onPageChangeListener;
     }
+
+    private OnPageChangeListener mOnPageChangeListener = new OnPageChangeListener() {
+        private float mPreviousOffset = -1;
+        private int mPreviousPosition = -1;
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            int realPosition = mWrapper.covert2RealPosition(position);
+            if (mPreviousPosition != realPosition) {
+                mPreviousPosition = realPosition;
+                if (mOnLoopPageChangeListener != null) {
+                    mOnLoopPageChangeListener.onPageSelected(realPosition);
+                }
+            }
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            if (mOnLoopPageChangeListener != null) {
+                mOnLoopPageChangeListener.onPageScrollStateChanged(state);
+            }
+//            switch (state) {
+//                case ViewPager.SCROLL_STATE_IDLE:
+//                    if (mOnLoopPageChangeListener != null) {
+//                        if (getCurrentItem() == mWrapper.getCount() - 1) {
+//                            mOnLoopPageChangeListener.onPageSelected(1);
+////                            setCurrentItem(1);
+//                        } else if (getCurrentItem() == 0) {
+//                            setCurrentItem(mWrapper.getCount() - 1);
+//                        }
+//                    }
+//                    break;
+//                case ViewPager.SCROLL_STATE_DRAGGING:
+////                isAutoPlay = false;
+//                    break;
+//                case ViewPager.SCROLL_STATE_SETTLING:
+////                isAutoPlay = true;
+//                    break;
+//            }
+        }
+    };
 
     public class LoopPagerAdapterWrapper extends PagerAdapter {
 
@@ -77,16 +112,18 @@ public class LoopViewPager extends ViewPager implements ViewPager.OnPageChangeLi
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            mAdapter.destroyItem(container, covert2RealPosition(position), object);
+            int realPosition = covert2RealPosition(position);
+            Log.d(TAG, "destroyItem:inner position=" + position + ";real position=" + realPosition);
+            mAdapter.destroyItem(container, realPosition, object);
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             int realPosition = covert2RealPosition(position);
-            Log.d(TAG, "inner position=" + position + ";real position=" + realPosition);
+            Log.d(TAG, "instantiateItem:inner position=" + position + ";real position=" + realPosition);
             return mAdapter == null
-                    ? super.instantiateItem(container, position)
-                    : mAdapter.instantiateItem(container, covert2RealPosition(position));
+                    ? super.instantiateItem(container, realPosition)
+                    : mAdapter.instantiateItem(container, realPosition);
         }
 
         @Override
@@ -96,7 +133,7 @@ public class LoopViewPager extends ViewPager implements ViewPager.OnPageChangeLi
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return view == object;
+            return mAdapter.isViewFromObject(view, object);
         }
 
         @Override
@@ -132,7 +169,6 @@ public class LoopViewPager extends ViewPager implements ViewPager.OnPageChangeLi
             } else {
                 return (innerPosition - 1) % realCount;
             }
-
         }
 
         /**
@@ -152,11 +188,11 @@ public class LoopViewPager extends ViewPager implements ViewPager.OnPageChangeLi
         }
 
         public int getRealFirstPostion() {
-            return 1;
+            return 0;
         }
 
         public int getRealLastPosition() {
-            return mAdapter.getCount();
+            return mAdapter.getCount() - 1;
         }
 
         public int getRealCount() {
