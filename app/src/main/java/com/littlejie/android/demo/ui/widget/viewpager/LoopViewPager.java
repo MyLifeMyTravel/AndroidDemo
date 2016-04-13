@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Lion on 2016/4/8.
  */
@@ -15,6 +18,8 @@ public class LoopViewPager extends ViewPager {
 
     public static final String TAG = "LoopViewPager";
 
+    private boolean mBoundaryCaching = true;
+    private Map<Integer, ToDestroy> mToDestroy = new HashMap<>();
     private LoopPagerAdapterWrapper mWrapper = null;
     private OnPageChangeListener mOnLoopPageChangeListener;
 
@@ -26,6 +31,10 @@ public class LoopViewPager extends ViewPager {
     public LoopViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         super.setOnPageChangeListener(mOnPageChangeListener);
+    }
+
+    public void setBoundaryCaching(boolean flag) {
+        mBoundaryCaching = flag;
     }
 
     @Override
@@ -58,12 +67,7 @@ public class LoopViewPager extends ViewPager {
 
     private OnPageChangeListener mOnPageChangeListener = new OnPageChangeListener() {
         private float mPreviousOffset = -1;
-        private int mPreviousPosition = -1;
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-        }
+        private float mPreviousPosition = -1;
 
         @Override
         public void onPageSelected(int position) {
@@ -77,28 +81,48 @@ public class LoopViewPager extends ViewPager {
         }
 
         @Override
+        public void onPageScrolled(int position, float positionOffset,
+                                   int positionOffsetPixels) {
+            int realPosition = position;
+            if (mWrapper != null) {
+                realPosition = mWrapper.covert2RealPosition(position);
+
+                if (positionOffset == 0
+                        && mPreviousOffset == 0
+                        && (position == 0 || position == mWrapper.getCount() - 1)) {
+                    setCurrentItem(realPosition, false);
+                }
+            }
+
+            mPreviousOffset = positionOffset;
+            if (mOnLoopPageChangeListener != null) {
+                if (realPosition != mWrapper.getRealCount() - 1) {
+                    mOnLoopPageChangeListener.onPageScrolled(realPosition,
+                            positionOffset, positionOffsetPixels);
+                } else {
+                    if (positionOffset > .5) {
+                        mOnLoopPageChangeListener.onPageScrolled(0, 0, 0);
+                    } else {
+                        mOnLoopPageChangeListener.onPageScrolled(realPosition,
+                                0, 0);
+                    }
+                }
+            }
+        }
+
+        @Override
         public void onPageScrollStateChanged(int state) {
+            if (mWrapper != null) {
+                int position = LoopViewPager.super.getCurrentItem();
+                int realPosition = mWrapper.covert2RealPosition(position);
+                if (state == ViewPager.SCROLL_STATE_IDLE
+                        && (position == 0 || position == mWrapper.getCount() - 1)) {
+                    setCurrentItem(realPosition, false);
+                }
+            }
             if (mOnLoopPageChangeListener != null) {
                 mOnLoopPageChangeListener.onPageScrollStateChanged(state);
             }
-//            switch (state) {
-//                case ViewPager.SCROLL_STATE_IDLE:
-//                    if (mOnLoopPageChangeListener != null) {
-//                        if (getCurrentItem() == mWrapper.getCount() - 1) {
-//                            mOnLoopPageChangeListener.onPageSelected(1);
-////                            setCurrentItem(1);
-//                        } else if (getCurrentItem() == 0) {
-//                            setCurrentItem(mWrapper.getCount() - 1);
-//                        }
-//                    }
-//                    break;
-//                case ViewPager.SCROLL_STATE_DRAGGING:
-////                isAutoPlay = false;
-//                    break;
-//                case ViewPager.SCROLL_STATE_SETTLING:
-////                isAutoPlay = true;
-//                    break;
-//            }
         }
     };
 
@@ -119,8 +143,24 @@ public class LoopViewPager extends ViewPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
+            int realFirst = getRealFirstPostion();
+            int realLast = getRealLastPosition();
             int realPosition = covert2RealPosition(position);
             Log.d(TAG, "instantiateItem:inner position=" + position + ";real position=" + realPosition);
+            if (mBoundaryCaching
+                    && (position == 0 || position == 1
+                    || position == getRealCount() || position == getRealCount() + 1)) {
+                ToDestroy toDestroy = mToDestroy.get(position);
+                if (toDestroy != null) {
+                    return toDestroy.object;
+                } else {
+                    Object object = mAdapter == null
+                            ? super.instantiateItem(container, realPosition)
+                            : mAdapter.instantiateItem(container, realPosition);
+                    mToDestroy.put(position, new ToDestroy(container, realPosition, object));
+                    return object;
+                }
+            }
             return mAdapter == null
                     ? super.instantiateItem(container, realPosition)
                     : mAdapter.instantiateItem(container, realPosition);
@@ -161,14 +201,13 @@ public class LoopViewPager extends ViewPager {
          */
         public int covert2RealPosition(int innerPosition) {
             int realCount = getRealCount();
-            if (realCount == 0) {
+            if (realCount == 0)
                 return 0;
-            }
-            if (innerPosition == 0) {
-                return realCount - 1;
-            } else {
-                return (innerPosition - 1) % realCount;
-            }
+            int realPosition = (innerPosition - 1) % realCount;
+            if (realPosition < 0)
+                realPosition += realCount;
+
+            return realPosition;
         }
 
         /**
@@ -187,12 +226,12 @@ public class LoopViewPager extends ViewPager {
             return realPosition + 1;
         }
 
-        public int getRealFirstPostion() {
+        private int getRealFirstPostion() {
             return 0;
         }
 
-        public int getRealLastPosition() {
-            return mAdapter.getCount() - 1;
+        private int getRealLastPosition() {
+            return mAdapter.getCount() + 1;
         }
 
         public int getRealCount() {
@@ -203,6 +242,21 @@ public class LoopViewPager extends ViewPager {
             return mAdapter;
         }
 
+    }
+
+    /**
+     * Container class for caching the boundary views
+     */
+    static class ToDestroy {
+        ViewGroup container;
+        int position;
+        Object object;
+
+        public ToDestroy(ViewGroup container, int position, Object object) {
+            this.container = container;
+            this.position = position;
+            this.object = object;
+        }
     }
 
 }
