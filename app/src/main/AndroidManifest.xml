@@ -20,6 +20,7 @@
         <activity android:name=".modules.other.OtherActivity"></activity>
         <activity android:name=".modules.widget.WidgetActivity"></activity>
         <activity android:name=".modules.widget.ViewPagerActivity"></activity>
+        <activity android:name=".modules.widget.TextViewActivity"></activity>
     </application>
 
 </manifest>

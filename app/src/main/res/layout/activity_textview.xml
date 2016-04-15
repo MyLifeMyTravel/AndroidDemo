@@ -4,18 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_viewpager"
+    <com.littlejie.ui.textview.LinkTextView
+        android:id="@+id/tv_link"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="ViewPager" />
-
-    <Button
-        android:id="@+id/btn_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="LinkTextView" />
+        android:text="@string/link_text" />
 
 </LinearLayout>
