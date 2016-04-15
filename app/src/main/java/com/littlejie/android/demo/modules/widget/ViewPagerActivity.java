@@ -2,8 +2,6 @@ package com.littlejie.android.demo.modules.widget;
 
 import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +9,8 @@ import android.widget.TextView;
 
 import com.littlejie.android.demo.R;
 import com.littlejie.android.demo.modules.base.BaseActivity;
-import com.littlejie.android.demo.ui.widget.viewpager.LoopViewPager;
+import com.littlejie.ui.viewpager.InfinitePagerAdapter;
+import com.littlejie.ui.viewpager.InfiniteViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ public class ViewPagerActivity extends BaseActivity {
 
     public static final String TAG = "ViewPagerActivity";
     private int[] color = new int[]{Color.BLUE, Color.GREEN, Color.RED, Color.CYAN, Color.GRAY};
-    private LoopViewPager mViewPager;
+    private InfiniteViewPager mViewPager;
     private List<View> mLstView;
 
     @Override
@@ -33,30 +32,13 @@ public class ViewPagerActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        mViewPager = (LoopViewPager) findViewById(R.id.viewpager);
+        mViewPager = (InfiniteViewPager) findViewById(R.id.viewpager);
         LoopPagerAdapter adapter = new LoopPagerAdapter();
-        mViewPager.setAdapter(adapter);
+        mViewPager.setAdapter(new InfinitePagerAdapter(adapter));
     }
 
     @Override
     protected void initViewListener() {
-        mViewPager.setOnLoopPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.d(TAG, "onPageScrolled,position=" + position + ";positionOffset=" + positionOffset + ";positionOffsetPixels=" + positionOffsetPixels);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                mViewPager.setCurrentItem(position, true);
-                Log.d(TAG, "onPageScrolled,position=" + position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                Log.d(TAG, "onPageScrollStateChanged,state=" + state);
-            }
-        });
     }
 
     @Override

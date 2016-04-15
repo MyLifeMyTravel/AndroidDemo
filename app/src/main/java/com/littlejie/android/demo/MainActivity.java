@@ -1,6 +1,5 @@
 package com.littlejie.android.demo;
 
-import android.Manifest;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
@@ -51,7 +50,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        requestPermission(Manifest.permission.READ_CONTACTS);
+
     }
 
     @Override
