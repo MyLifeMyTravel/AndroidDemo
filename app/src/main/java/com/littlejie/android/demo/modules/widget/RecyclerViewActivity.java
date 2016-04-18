@@ -1,20 +1,20 @@
-package com.littlejie.android.demo.modules.other;
+package com.littlejie.android.demo.modules.widget;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.littlejie.android.demo.R;
 import com.littlejie.android.demo.model.CardInfo;
-import com.littlejie.android.demo.modules.base.BaseActivity;
 import com.littlejie.android.demo.ui.adapter.CardAdapter;
+import com.littlejie.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Lion on 2016/4/6.
+ * Created by Lion on 2016/4/18.
  */
-public class OtherActivity extends BaseActivity {
+public class RecyclerViewActivity extends BaseActivity {
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;

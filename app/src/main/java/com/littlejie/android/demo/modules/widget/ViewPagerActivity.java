@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.littlejie.android.demo.R;
-import com.littlejie.android.demo.modules.base.BaseActivity;
+import com.littlejie.base.BaseActivity;
 import com.littlejie.ui.viewpager.InfinitePagerAdapter;
 import com.littlejie.ui.viewpager.InfiniteViewPager;
 
