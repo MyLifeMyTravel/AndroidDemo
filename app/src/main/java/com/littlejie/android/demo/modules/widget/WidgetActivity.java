@@ -13,6 +13,7 @@ import com.littlejie.base.BaseActivity;
 public class WidgetActivity extends BaseActivity {
 
     private Button mBtnViewPager;
+    private Button mBtnTextView;
 
     @Override
     protected int getPageLayoutID() {
@@ -22,6 +23,7 @@ public class WidgetActivity extends BaseActivity {
     @Override
     protected void initView() {
         mBtnViewPager = (Button) findViewById(R.id.btn_viewpager);
+        mBtnTextView = (Button) findViewById(R.id.btn_textview);
     }
 
     @Override
@@ -30,6 +32,12 @@ public class WidgetActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 ActivityManager.startActivity(WidgetActivity.this, ViewPagerActivity.class);
+            }
+        });
+        mBtnTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityManager.startActivity(WidgetActivity.this, TextViewActivity.class);
             }
         });
     }

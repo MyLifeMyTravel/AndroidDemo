@@ -8,12 +8,12 @@ import android.util.Log;
 
 /**
  * 剪贴板工具类
+ * http://developer.android.com/guide/topics/text/copy-paste.html
  * Created by Lion on 2016/4/15.
  */
 public class ClipboardUtil {
 
     public static final String TAG = "ClipboardUtil";
-
     private static ClipboardUtil instance;
     private ClipboardManager clipboard;
 
@@ -36,11 +36,17 @@ public class ClipboardUtil {
     public String getClipText() {
         String text = null;
         ClipData data = clipboard.getPrimaryClip();
-        if (clipboard.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+        if (data != null
+                && clipboard.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
             text = data.getItemAt(0).getText().toString();
             Log.d(TAG, text);
         }
         return text;
+    }
+
+    public void clearTextClip() {
+        ClipData data = ClipData.newPlainText("", "");
+        clipboard.setPrimaryClip(data);
     }
 
     public void destory() {

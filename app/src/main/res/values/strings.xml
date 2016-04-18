@@ -2,4 +2,6 @@
     <string name="app_name">AndroidDemo</string>
     <string name="navigation_other">Other</string>
     <string name="navigation_widget">User Widget</string>
+
+    <string name="link_text">本文本用于测试LinkTextView，点击<a href="http://cn.bing.com/">超链接</a>可跳转到相应URL；点击剩余文字可执行TextView的点击事件</string>
 </resources>
