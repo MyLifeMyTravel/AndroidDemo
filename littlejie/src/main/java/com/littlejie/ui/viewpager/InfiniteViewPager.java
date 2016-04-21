@@ -2,9 +2,12 @@ package com.littlejie.ui.viewpager;
 
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+
+import com.littlejie.R;
 
 /**
  * A {@link ViewPager} that allows pseudo-infinite paging with a wrap-around effect. Should be used with an {@link
@@ -12,17 +15,31 @@ import android.util.AttributeSet;
  */
 public class InfiniteViewPager extends ViewPager {
 
+    private PagerAdapter mWrapper;
+    private boolean isInfinite;
+
     public InfiniteViewPager(Context context) {
         super(context);
     }
 
     public InfiniteViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context, attrs);
+    }
+
+    private void init(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.InfiniteViewPager);
+        isInfinite = typedArray.getBoolean(R.styleable.InfiniteViewPager_infinite, false);
     }
 
     @Override
     public void setAdapter(PagerAdapter adapter) {
-        super.setAdapter(adapter);
+        if (isInfinite) {
+            mWrapper = new InfinitePagerAdapter(adapter);
+        } else {
+            mWrapper = adapter;
+        }
+        super.setAdapter(mWrapper);
         // offset first element so that we can scroll to the left
         setCurrentItem(0);
     }

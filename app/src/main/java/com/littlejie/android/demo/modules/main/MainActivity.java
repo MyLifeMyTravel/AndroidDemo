@@ -1,13 +1,16 @@
-package com.littlejie.android.demo;
+package com.littlejie.android.demo.modules.main;
 
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.littlejie.android.demo.R;
 import com.littlejie.android.demo.modules.widget.RecyclerViewActivity;
 import com.littlejie.android.demo.modules.widget.ViewPagerActivity;
+import com.littlejie.android.demo.modules.widget.WidgetActivity;
 import com.littlejie.base.BaseActivity;
+import com.littlejie.manager.ActivityManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +48,9 @@ public class MainActivity extends BaseActivity {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
+                if (R.id.navigation_widget == item.getItemId()) {
+                    ActivityManager.startActivity(MainActivity.this, WidgetActivity.class);
+                }
                 if (mNavMap.containsKey(item.getItemId())) {
                     item.setChecked(true);
                     mDrawerLayout.closeDrawers();
