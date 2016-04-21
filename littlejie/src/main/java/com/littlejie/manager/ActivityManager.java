@@ -1,4 +1,4 @@
-package com.littlejie.android.demo.manager;
+package com.littlejie.manager;
 
 import android.content.Context;
 import android.content.Intent;

@@ -4,8 +4,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.littlejie.android.demo.R;
-import com.littlejie.android.demo.manager.ActivityManager;
-import com.littlejie.android.demo.modules.base.BaseActivity;
+import com.littlejie.manager.ActivityManager;
+import com.littlejie.base.BaseActivity;
 
 /**
  * Created by Lion on 2016/4/8.

@@ -8,8 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.littlejie.android.demo.R;
-import com.littlejie.android.demo.modules.base.BaseActivity;
-import com.littlejie.ui.viewpager.InfinitePagerAdapter;
+import com.littlejie.base.BaseActivity;
 import com.littlejie.ui.viewpager.InfiniteViewPager;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class ViewPagerActivity extends BaseActivity {
     protected void initView() {
         mViewPager = (InfiniteViewPager) findViewById(R.id.viewpager);
         LoopPagerAdapter adapter = new LoopPagerAdapter();
-        mViewPager.setAdapter(new InfinitePagerAdapter(adapter));
+        mViewPager.setAdapter(adapter);
     }
 
     @Override

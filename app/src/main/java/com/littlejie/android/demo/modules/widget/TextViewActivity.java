@@ -5,7 +5,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.littlejie.android.demo.R;
-import com.littlejie.android.demo.modules.base.BaseActivity;
+import com.littlejie.base.BaseActivity;
 
 /**
  * Created by Lion on 2016/4/15.

@@ -1,4 +1,4 @@
-package com.littlejie.android.demo.modules.base;
+package com.littlejie.base;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
