@@ -1,5 +1,6 @@
 package com.littlejie.android.demo.modules.main;
 
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
@@ -7,6 +8,7 @@ import android.widget.Toast;
 
 import com.littlejie.android.demo.R;
 import com.littlejie.android.demo.modules.widget.RecyclerViewActivity;
+import com.littlejie.android.demo.modules.widget.TextViewActivity;
 import com.littlejie.android.demo.modules.widget.ViewPagerActivity;
 import com.littlejie.android.demo.modules.widget.WidgetActivity;
 import com.littlejie.base.BaseActivity;
@@ -24,7 +26,8 @@ public class MainActivity extends BaseActivity {
 
     static {
         Class[] otherActivities = {};
-        Class[] widgetActivities = {ViewPagerActivity.class, RecyclerViewActivity.class};
+        Class[] widgetActivities = {ViewPagerActivity.class, RecyclerViewActivity.class,
+                TextViewActivity.class};
 
         mNavMap.put(R.id.navigation_other, otherActivities);
         mNavMap.put(R.id.navigation_widget, widgetActivities);
@@ -49,6 +52,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 if (R.id.navigation_widget == item.getItemId()) {
+                    Intent intent = new Intent();
+                    intent.putExtra("test", mNavMap.get(item.getItemId()));
                     ActivityManager.startActivity(MainActivity.this, WidgetActivity.class);
                 }
                 if (mNavMap.containsKey(item.getItemId())) {

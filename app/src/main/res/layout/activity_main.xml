@@ -6,11 +6,19 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <!-- content -->
-    <FrameLayout
-        android:id="@+id/content_layout"
+    <!-- Content -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar_actionbar" />
+
+        <FrameLayout
+            android:id="@+id/content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
     <!-- drawer -->
     <android.support.design.widget.NavigationView
