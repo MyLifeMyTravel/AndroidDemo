@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_emoji"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入内容(包括表情)" />
+
+    <TextView
+        android:id="@+id/tv_emoji_ori"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="这里显示输入的内容\ue32d" />
+
+    <TextView
+        android:id="@+id/tv_emoji_encode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="这里显示输入编码后的内容" />
+
+    <TextView
+        android:id="@+id/tv_emoji_decode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="这里显示解码后的内容" />
+
+    <TextView
+        android:id="@+id/tv_emoji_directly_decode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="这里显示输入内容直接解码后的内容" />
+
+    <Button
+        android:id="@+id/btn_emoji"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="点击在TextView上显示EditText输入" />
+</LinearLayout>

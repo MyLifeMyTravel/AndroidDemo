@@ -12,7 +12,7 @@ import android.widget.Toast;
  */
 public abstract class BaseActivity extends Activity {
 
-    public static final String TAG = "MainActivity";
+    public final String TAG = this.getClass().getSimpleName();
 
     protected int requestCode;
 
