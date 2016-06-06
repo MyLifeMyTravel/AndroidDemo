@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Accessibility</string>
+    <string name="sign_in_service_description">使用辅助功能实现自动签到</string>
 </resources>
