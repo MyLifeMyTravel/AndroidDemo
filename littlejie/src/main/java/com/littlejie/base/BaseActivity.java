@@ -7,6 +7,8 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.littlejie.utils.Logger;
+
 /**
  * Created by Lion on 2016/4/6.
  */
@@ -19,6 +21,7 @@ public abstract class BaseActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Logger.init(TAG);
         setContentView(getPageLayoutID());
         initData();
         initView();
