@@ -1,11 +1,10 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.littlejie.android.viewstub"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
@@ -23,5 +22,5 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.3.0'
-    compile project(':scanner')
+    compile 'com.google.zxing:core:3.2.1'
 }

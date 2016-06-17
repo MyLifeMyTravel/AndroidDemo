@@ -1,10 +1,13 @@
 package com.littlejie.android.viewstub;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewStub;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.littlejie.scanner.ScanActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,9 +22,14 @@ public class MainActivity extends AppCompatActivity {
         mTvShowStub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findViewById(R.id.viewstub).setVisibility(View.VISIBLE);
-//                ((ViewStub) findViewById(R.id.viewstub)).inflate();
+                startActivityForResult(new Intent(MainActivity.this, ScanActivity.class), 0);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Toast.makeText(this, data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
     }
 }
