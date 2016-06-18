@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.google.zxing.Result;
 import com.littlejie.scanner.decoding.InactivityTimer;
 import com.littlejie.scanner.interfaces.OnDecodeFinishListener;
+import com.littlejie.scanner.view.ScanView;
 
 import java.io.IOException;
 

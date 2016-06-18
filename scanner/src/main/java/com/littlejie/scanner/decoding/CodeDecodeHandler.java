@@ -24,7 +24,7 @@ import android.util.Log;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
-import com.littlejie.scanner.IHandler;
+import com.littlejie.scanner.interfaces.IHandler;
 import com.littlejie.scanner.camera.CameraManager;
 import com.littlejie.scanner.view.ViewfinderResultPointCallback;
 

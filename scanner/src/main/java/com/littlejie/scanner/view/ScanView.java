@@ -1,9 +1,12 @@
-package com.littlejie.scanner;
+package com.littlejie.scanner.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -14,10 +17,11 @@ import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
+import com.littlejie.scanner.R;
 import com.littlejie.scanner.camera.CameraManager;
 import com.littlejie.scanner.decoding.CodeDecodeHandler;
+import com.littlejie.scanner.interfaces.IHandler;
 import com.littlejie.scanner.interfaces.OnDecodeFinishListener;
-import com.littlejie.scanner.view.ViewfinderView;
 
 import java.io.IOException;
 import java.util.Vector;
@@ -32,11 +36,14 @@ public class ScanView extends LinearLayout implements SurfaceHolder.Callback, IH
     private Context context;
     private ViewfinderView viewfinderView;
     private SurfaceView surfaceView;
+    private SurfaceHolder surfaceHolder;
 
     private CodeDecodeHandler handler;
     private Vector<BarcodeFormat> decodeFormats;
     private String characterSet;
     private boolean hasSurface;
+    //设置Surface的宽高
+    private int width, height;
 
     private OnDecodeFinishListener onDecodeFinishListener;
 
@@ -56,12 +63,10 @@ public class ScanView extends LinearLayout implements SurfaceHolder.Callback, IH
         CameraManager.init(context);
         viewfinderView = (ViewfinderView) view.findViewById(R.id.viewfinder_view);
         surfaceView = (SurfaceView) view.findViewById(R.id.preview_view);
-
-        hasSurface = false;
+        surfaceHolder = surfaceView.getHolder();
     }
 
     public void onResume() {
-        SurfaceHolder surfaceHolder = surfaceView.getHolder();
         if (hasSurface) {
             initCamera(surfaceHolder);
         } else {
@@ -124,6 +129,10 @@ public class ScanView extends LinearLayout implements SurfaceHolder.Callback, IH
     private void initCamera(SurfaceHolder surfaceHolder) {
         try {
             CameraManager.get().openDriver(surfaceHolder);
+            //重新计算surface高度
+            DisplayMetrics dm = getDisplayMetrics((Activity) context);
+            Point screen = new Point(dm.widthPixels, getHeight());
+            CameraManager.get().resetCameraResolution(screen);
         } catch (IOException ioe) {
             showOpenCameraFail();
             return;
@@ -135,6 +144,12 @@ public class ScanView extends LinearLayout implements SurfaceHolder.Callback, IH
             handler = new CodeDecodeHandler(this, decodeFormats,
                     characterSet);
         }
+    }
+
+    private DisplayMetrics getDisplayMetrics(Activity activity) {
+        DisplayMetrics dm = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        return dm;
     }
 
     private void showOpenCameraFail() {

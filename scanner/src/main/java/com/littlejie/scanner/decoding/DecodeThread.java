@@ -22,7 +22,7 @@ import android.os.Looper;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.ResultPointCallback;
-import com.littlejie.scanner.IHandler;
+import com.littlejie.scanner.interfaces.IHandler;
 
 import java.util.Hashtable;
 import java.util.Vector;

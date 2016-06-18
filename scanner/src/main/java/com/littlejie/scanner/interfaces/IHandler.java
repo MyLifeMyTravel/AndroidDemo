@@ -1,4 +1,4 @@
-package com.littlejie.scanner;
+package com.littlejie.scanner.interfaces;
 
 
 import android.graphics.Bitmap;
