@@ -50,11 +50,11 @@ final class DecodeHandler extends Handler {
     @Override
     public void handleMessage(Message message) {
         switch (message.what) {
-            case CaptureActivityHandler.DECODE:
+            case CodeDecodeHandler.DECODE:
                 //Log.d(TAG, "Got decode message");
                 decode((byte[]) message.obj, message.arg1, message.arg2);
                 break;
-            case CaptureActivityHandler.QUIT:
+            case CodeDecodeHandler.QUIT:
                 Looper.myLooper().quit();
                 break;
         }
@@ -95,14 +95,14 @@ final class DecodeHandler extends Handler {
         if (rawResult != null) {
             long end = System.currentTimeMillis();
             Log.d(TAG, "Found barcode (" + (end - start) + " ms):\n" + rawResult.toString());
-            Message message = Message.obtain(iHandler.getHandler(), CaptureActivityHandler.DECODE_SUCCEEDED, rawResult);
+            Message message = Message.obtain(iHandler.getDecodeHandler(), CodeDecodeHandler.DECODE_SUCCEEDED, rawResult);
             Bundle bundle = new Bundle();
             bundle.putParcelable(DecodeThread.BARCODE_BITMAP, source.renderCroppedGreyscaleBitmap());
             message.setData(bundle);
             //Log.d(TAG, "Sending decode succeeded message...");
             message.sendToTarget();
         } else {
-            Message message = Message.obtain(iHandler.getHandler(), CaptureActivityHandler.DECODE_FAILED);
+            Message message = Message.obtain(iHandler.getDecodeHandler(), CodeDecodeHandler.DECODE_FAILED);
             message.sendToTarget();
         }
     }

@@ -12,7 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:text="Hello World!" />
 
-    <TextView
+    <Button
         android:id="@+id/btn_show_viewstub"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

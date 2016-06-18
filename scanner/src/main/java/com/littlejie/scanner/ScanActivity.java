@@ -1,47 +1,55 @@
 package com.littlejie.scanner;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Vibrator;
-import android.view.SurfaceHolder;
-import android.view.SurfaceHolder.Callback;
-import android.view.SurfaceView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
-import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
-import com.littlejie.scanner.camera.CameraManager;
-import com.littlejie.scanner.decoding.CaptureActivityHandler;
 import com.littlejie.scanner.decoding.InactivityTimer;
-import com.littlejie.scanner.view.ViewfinderView;
+import com.littlejie.scanner.interfaces.OnDecodeFinishListener;
 
 import java.io.IOException;
-import java.util.Vector;
 
 /**
  * Initial the camera
  *
  * @author Ryan.Tang
  */
-public class ScanActivity extends Activity implements Callback, IHandler {
+public class ScanActivity extends Activity {
 
-    private CaptureActivityHandler handler;
-    private ViewfinderView viewfinderView;
-    private boolean hasSurface;
-    private Vector<BarcodeFormat> decodeFormats;
-    private String characterSet;
+    private static final float BEEP_VOLUME = 0.50f;
+
     private InactivityTimer inactivityTimer;
+    private ScanView scanView;
+
     private MediaPlayer mediaPlayer;
     private boolean playBeep;
-    private static final float BEEP_VOLUME = 0.10f;
     private boolean vibrate;
+
+    private OnDecodeFinishListener onDecodeFinishListener = new OnDecodeFinishListener() {
+        @Override
+        public void onDecodeFinish(Result result, Bitmap barcode) {
+            playBeepSoundAndVibrate();
+            String resultText = result.getText();
+            if (TextUtils.isEmpty(resultText)) {
+                Toast.makeText(ScanActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent();
+                intent.putExtra("result", resultText);
+                setResult(RESULT_OK, intent);
+            }
+            ScanActivity.this.finish();
+        }
+    };
 
     /**
      * Called when the activity is first created.
@@ -49,125 +57,40 @@ public class ScanActivity extends Activity implements Callback, IHandler {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.scan);
-        //ViewUtil.addTopView(getApplicationContext(), this, R.string.scan_card);
-        CameraManager.init(getApplication());
-        viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
+        setContentView(R.layout.activity_scan);
+        scanView = (ScanView) findViewById(R.id.scanview);
+        scanView.setOnDecodeFinishListener(onDecodeFinishListener);
 
-        hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
+        initBeepSoundAndVibrate();
+    }
+
+    private void initBeepSoundAndVibrate() {
+        playBeep = true;
+        AudioManager audioService = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        if (audioService.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
+            playBeep = false;
+        }
+        vibrate = true;
+        initBeepSound();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
-        SurfaceHolder surfaceHolder = surfaceView.getHolder();
-        if (hasSurface) {
-            initCamera(surfaceHolder);
-        } else {
-            surfaceHolder.addCallback(this);
-            surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        }
-        decodeFormats = null;
-        characterSet = null;
-
-        playBeep = true;
-        AudioManager audioService = (AudioManager) getSystemService(AUDIO_SERVICE);
-        if (audioService.getRingerMode() != AudioManager.RINGER_MODE_NORMAL) {
-            playBeep = false;
-        }
-        initBeepSound();
-        vibrate = true;
-
+        scanView.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (handler != null) {
-            handler.quitSynchronously();
-            handler = null;
-        }
-        CameraManager.get().closeDriver();
+        scanView.onPause();
     }
 
     @Override
     protected void onDestroy() {
         inactivityTimer.shutdown();
         super.onDestroy();
-    }
-
-    @Override
-    public void handleDecode(Result result, Bitmap barcode) {
-        inactivityTimer.onActivity();
-        playBeepSoundAndVibrate();
-        String resultString = result.getText();
-        if (resultString.equals("")) {
-            Toast.makeText(ScanActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
-        } else {
-            Intent resultIntent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putString("result", resultString);
-            resultIntent.putExtras(bundle);
-            this.setResult(RESULT_OK, resultIntent);
-        }
-        ScanActivity.this.finish();
-    }
-
-    private void initCamera(SurfaceHolder surfaceHolder) {
-        try {
-            CameraManager.get().openDriver(surfaceHolder);
-        } catch (IOException ioe) {
-            showOpenCameraFail();
-            return;
-        } catch (RuntimeException e) {
-            showOpenCameraFail();
-            return;
-        }
-        if (handler == null) {
-            handler = new CaptureActivityHandler(this, decodeFormats,
-                    characterSet);
-        }
-    }
-
-    private void showOpenCameraFail() {
-        Toast.makeText(this,
-                getString(R.string.open_camera_failed) + getString(R.string.open_camera_permission_tip),
-                Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width,
-                               int height) {
-
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        if (!hasSurface) {
-            hasSurface = true;
-            initCamera(holder);
-        }
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        hasSurface = false;
-    }
-
-    public ViewfinderView getViewfinderView() {
-        return viewfinderView;
-    }
-
-    @Override
-    public Handler getHandler() {
-        return handler;
-    }
-
-    public void drawViewfinder() {
-        viewfinderView.drawViewfinder();
-
     }
 
     private void initBeepSound() {
@@ -197,11 +120,13 @@ public class ScanActivity extends Activity implements Callback, IHandler {
     private static final long VIBRATE_DURATION = 200L;
 
     private void playBeepSoundAndVibrate() {
+        Log.d("ScanActivity", "playBeep=" + playBeep);
+        Log.d("ScanActivity", "mediaPlayer=" + mediaPlayer);
         if (playBeep && mediaPlayer != null) {
             mediaPlayer.start();
         }
         if (vibrate) {
-            Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+            Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(VIBRATE_DURATION);
         }
     }
@@ -209,7 +134,7 @@ public class ScanActivity extends Activity implements Callback, IHandler {
     /**
      * When the beep has finished playing, rewind to queue up another one.
      */
-    private final OnCompletionListener beepListener = new OnCompletionListener() {
+    private final MediaPlayer.OnCompletionListener beepListener = new MediaPlayer.OnCompletionListener() {
         public void onCompletion(MediaPlayer mediaPlayer) {
             mediaPlayer.seekTo(0);
         }

@@ -12,7 +12,7 @@ import com.littlejie.scanner.view.ViewfinderView;
  */
 public interface IHandler {
 
-    Handler getHandler();
+    Handler getDecodeHandler();
 
     /**
      * 处理扫描结果

@@ -33,9 +33,9 @@ import java.util.Vector;
 /**
  * This class handles all the messaging which comprises the state machine for capture.
  */
-public final class CaptureActivityHandler extends Handler {
+public final class CodeDecodeHandler extends Handler {
 
-    private static final String TAG = CaptureActivityHandler.class.getSimpleName();
+    private static final String TAG = CodeDecodeHandler.class.getSimpleName();
 
     private final IHandler iHandler;
     private final DecodeThread decodeThread;
@@ -54,8 +54,8 @@ public final class CaptureActivityHandler extends Handler {
         DONE
     }
 
-    public CaptureActivityHandler(IHandler iHandler, Vector<BarcodeFormat> decodeFormats,
-                                  String characterSet) {
+    public CodeDecodeHandler(IHandler iHandler, Vector<BarcodeFormat> decodeFormats,
+                             String characterSet) {
         this.iHandler = iHandler;
         decodeThread = new DecodeThread(iHandler, decodeFormats, characterSet,
                 new ViewfinderResultPointCallback(iHandler.getViewfinderView()));
