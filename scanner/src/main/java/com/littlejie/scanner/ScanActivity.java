@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
@@ -61,6 +62,24 @@ public class ScanActivity extends Activity {
         setContentView(R.layout.activity_scan);
         scanView = (ScanView) findViewById(R.id.scanview);
         scanView.setOnDecodeFinishListener(onDecodeFinishListener);
+        findViewById(R.id.btn_start).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scanView.onStart();
+            }
+        });
+        findViewById(R.id.btn_pause).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scanView.onPause();
+            }
+        });
+        findViewById(R.id.btn_continue).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scanView.onContinue();
+            }
+        });
 
         inactivityTimer = new InactivityTimer(this);
         initBeepSoundAndVibrate();
@@ -79,13 +98,7 @@ public class ScanActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        scanView.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        scanView.onPause();
+        scanView.onStart();
     }
 
     @Override

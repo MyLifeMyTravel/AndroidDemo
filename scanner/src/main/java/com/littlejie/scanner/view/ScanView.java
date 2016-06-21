@@ -42,8 +42,6 @@ public class ScanView extends LinearLayout implements SurfaceHolder.Callback, IH
     private Vector<BarcodeFormat> decodeFormats;
     private String characterSet;
     private boolean hasSurface;
-    //设置Surface的宽高
-    private int width, height;
 
     private OnDecodeFinishListener onDecodeFinishListener;
 
@@ -66,7 +64,7 @@ public class ScanView extends LinearLayout implements SurfaceHolder.Callback, IH
         surfaceHolder = surfaceView.getHolder();
     }
 
-    public void onResume() {
+    public void onStart() {
         if (hasSurface) {
             initCamera(surfaceHolder);
         } else {
@@ -78,11 +76,34 @@ public class ScanView extends LinearLayout implements SurfaceHolder.Callback, IH
     }
 
     public void onPause() {
+        if (CameraManager.get() != null) {
+            CameraManager.get().stopPreview();
+        }
+        if (viewfinderView != null) {
+            viewfinderView.isPause(true);
+        }
+    }
+
+    public void onContinue() {
+        if (CameraManager.get() != null) {
+            CameraManager.get().startPreview();
+        }
+        if (handler != null) {
+            handler.restartPreviewAndDecode();
+        }
+        if (viewfinderView != null) {
+            viewfinderView.isPause(false);
+        }
+    }
+
+    private void onDestory() {
         if (handler != null) {
             handler.quitSynchronously();
             handler = null;
         }
-        CameraManager.get().closeDriver();
+        if (CameraManager.get() != null) {
+            CameraManager.get().closeDriver();
+        }
     }
 
     @Override
@@ -100,6 +121,7 @@ public class ScanView extends LinearLayout implements SurfaceHolder.Callback, IH
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         hasSurface = false;
+        onDestory();
     }
 
     @Override
@@ -109,6 +131,7 @@ public class ScanView extends LinearLayout implements SurfaceHolder.Callback, IH
 
     @Override
     public void handleDecode(Result result, Bitmap barcode) {
+        Log.d(TAG, "has decode result");
         if (onDecodeFinishListener != null) {
             onDecodeFinishListener.onDecodeFinish(result, barcode);
         } else {

@@ -57,6 +57,7 @@ public final class ViewfinderView extends View {
     private Collection<ResultPoint> lastPossibleResultPoints;
     private int mCornerLength;
     private int mSlideTop = -1;
+    private boolean isPause;
 
     // This constructor is used when the class is built from an XML resource.
     public ViewfinderView(Context context, AttributeSet attrs) {
@@ -137,7 +138,9 @@ public final class ViewfinderView extends View {
         }
         // Request another update at the animation interval, but only repaint the laser line,
         // not the entire viewfinder mask.
-        postInvalidateDelayed(ANIMATION_DELAY, frame.left, frame.top, frame.right, frame.bottom);
+        if (!isPause) {
+            postInvalidateDelayed(ANIMATION_DELAY, frame.left, frame.top, frame.right, frame.bottom);
+        }
     }
 
     public void drawViewfinder() {
@@ -219,6 +222,13 @@ public final class ViewfinderView extends View {
     private float getFontHeight() {
         Paint.FontMetrics metrics = paint.getFontMetrics();
         return metrics.descent - metrics.ascent;
+    }
+
+    public void isPause(boolean pause) {
+        if (!isPause) {
+            postInvalidate(frame.left, frame.top, frame.right, frame.bottom);
+        }
+        isPause = pause;
     }
 
     private float getFontWidth(String text) {

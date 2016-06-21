@@ -28,6 +28,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(this, data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
     }
 }
