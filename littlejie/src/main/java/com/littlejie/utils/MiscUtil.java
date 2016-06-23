@@ -152,4 +152,15 @@ public class MiscUtil {
     public static int getDisplayHeight(Activity activity) {
         return Core.getDisplayMetrics(activity).heightPixels;
     }
+
+    public static int dip2px(float dpValue) {
+        return Core.dip2px(dpValue);
+    }
+
+    /**
+     * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+     */
+    public static int px2dip(float pxValue) {
+        return Core.px2dip(pxValue);
+    }
 }

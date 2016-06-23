@@ -1,7 +1,5 @@
 package com.littlejie.utils;
 
-import com.orhanobut.logger.LogLevel;
-
 /**
  * Created by Lion on 2016/6/15.
  */

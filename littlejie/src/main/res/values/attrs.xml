@@ -4,4 +4,17 @@
         <attr name="infinite" format="boolean"></attr>
     </declare-styleable>
 
+    <declare-styleable name="BaseImageView">
+        <attr name="defaltImage" format="reference"></attr>
+        <attr name="customImage" format="boolean"></attr>
+        <attr name="radius" format="dimension"></attr>
+        <attr name="imageSrc" format="reference"></attr>
+        <attr name="stateful" format="boolean"></attr>
+        <attr name="bitmapModel">
+            <enum name="ALPHA_8" value="1"></enum>
+            <enum name="RGB_565" value="3"></enum>
+            <enum name="ARGB_4444" value="4"></enum>
+            <enum name="ARGB_8888" value="5"></enum>
+        </attr>
+    </declare-styleable>
 </resources>
