@@ -31,7 +31,7 @@ public class WidgetActivity extends BaseActivity {
         mBtnViewPager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityManager.startActivity(WidgetActivity.this, ViewPagerActivity.class);
+                ActivityManager.startActivity(WidgetActivity.this, GridImageActivity.class);
             }
         });
         mBtnTextView.setOnClickListener(new View.OnClickListener() {

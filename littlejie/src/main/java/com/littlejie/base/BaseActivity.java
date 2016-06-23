@@ -66,6 +66,11 @@ public abstract class BaseActivity extends Activity {
     protected abstract int getPageLayoutID();
 
     /**
+     * 初始化数据
+     */
+    protected abstract void initData();
+
+    /**
      * 初始化页面控件
      */
     protected abstract void initView();
@@ -74,11 +79,6 @@ public abstract class BaseActivity extends Activity {
      * 初始化控件监听器
      */
     protected abstract void initViewListener();
-
-    /**
-     * 初始化数据
-     */
-    protected abstract void initData();
 
     protected void requestPermission(final String permission, String reason, final int requestCode) {
         this.requestCode = requestCode;

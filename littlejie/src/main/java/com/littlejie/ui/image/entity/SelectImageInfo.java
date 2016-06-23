@@ -1,30 +1,32 @@
 package com.littlejie.ui.image.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Lion on 2016/6/23.
  */
-public class SelectImageInfo extends ImageInfo {
+public class SelectImageInfo implements Serializable {
 
     //选中Image的坐标
-    private int x;
-    private int y;
+    private float x;
+    private float y;
     //选择Image的宽高
     private int width;
     private int height;
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(float y) {
         this.y = y;
     }
 

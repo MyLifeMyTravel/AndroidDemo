@@ -2,11 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
     android:orientation="vertical">
 
-    <com.littlejie.ui.viewpager.InfiniteViewPager
-        android:id="@+id/viewpage"
+    <GridView
+        android:id="@+id/grid_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:horizontalSpacing="10dp"
+        android:numColumns="3"
+        android:verticalSpacing="10dp"></GridView>
 </LinearLayout>

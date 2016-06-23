@@ -13,26 +13,14 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
-import org.acra.ACRA;
-import org.acra.annotation.ReportsCrashes;
-
 import java.io.File;
 
 /**
  * Created by Lion on 2016/6/14.
  */
-@ReportsCrashes(
-        formUri = "http://www.backendofyourchoice.com/reportpath"
-)
 public class BaseApplication extends Application {
 
     private static Context instance;
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        ACRA.init(this);
-    }
 
     @Override
     public void onCreate() {
