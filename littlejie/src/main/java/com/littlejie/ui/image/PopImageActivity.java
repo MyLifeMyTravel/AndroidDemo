@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -80,15 +81,24 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
         mImageInfo.setWidth(1280);
         mImageInfo.setHeight(720);
         mScreenWidth = MiscUtil.getDisplayWidth();
-        mScreenHeight = MiscUtil.getDisplayHeight();
+        mScreenHeight = MiscUtil.getDisplayHeight()-getStatusBarHeight();
         mLstImage = generateImageList();
-        mIvTemp = generateTempImageView(mSelectImageInfo, mLstImageUrl.get(mIndex));
+        generateTempImageView(mSelectImageInfo, mLstImageUrl.get(mIndex));
         mAttacher = new PhotoViewAttacher(mIvTemp);
         mHandler = new Handler();
         mSpring = SpringSystem
                 .create()
                 .createSpring()
                 .addListener(new MySpringListener());
+    }
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     @Override
@@ -243,11 +253,11 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
         return lstImage;
     }
 
-    private BaseImageView generateTempImageView(SelectImageInfo info, String url) {
-        BaseImageView imageView = new BaseImageView(this, 0);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView.setLeft((int) info.getX());
-        imageView.setTop((int) info.getY());
+    private void generateTempImageView(SelectImageInfo info, String url) {
+        mIvTemp = new BaseImageView(this, 0);
+        mIvTemp.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        mIvTemp.setLeft((int) info.getX());
+        mIvTemp.setTop((int) info.getY());
 
         float x = mSelectImageInfo.getX();
         float y = mSelectImageInfo.getY();
@@ -263,9 +273,8 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
         }
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(width, height);
         lp.setMargins((int) x, (int) y, (mScreenWidth - ((int) x + width)), (mScreenHeight - ((int) y + height)));
-        imageView.setLayoutParams(lp);
-        imageView.setImage(url);
-        return imageView;
+        mIvTemp.setLayoutParams(lp);
+        mIvTemp.setImage(url);
     }
 
     public class PopImagePageAdapter extends PagerAdapter {
