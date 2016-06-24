@@ -8,8 +8,8 @@ import java.io.Serializable;
 public class ImageInfo implements Serializable {
 
     private String url;
-    private int width;
-    private int height;
+    private int width = 1;
+    private int height = 1;
 
     public String getUrl() {
         return url;

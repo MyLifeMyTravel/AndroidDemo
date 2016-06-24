@@ -139,18 +139,18 @@ public class MiscUtil {
         return resultData;
     }
 
-    public static DisplayMetrics getDisplayMetrics(Activity activity) {
-        return Core.getDisplayMetrics(activity);
+    public static DisplayMetrics getDisplayMetrics() {
+        return Core.getDisplayMetrics();
     }
 
     // 获取屏幕宽度，返回像素值
-    public static int getDisplayWidth(Activity activity) {
-        return Core.getDisplayMetrics(activity).widthPixels;
+    public static int getDisplayWidth() {
+        return Core.getDisplayMetrics().widthPixels;
     }
 
     // 获取屏幕高度，返回像素值
-    public static int getDisplayHeight(Activity activity) {
-        return Core.getDisplayMetrics(activity).heightPixels;
+    public static int getDisplayHeight() {
+        return Core.getDisplayMetrics().heightPixels;
     }
 
     public static int dip2px(float dpValue) {

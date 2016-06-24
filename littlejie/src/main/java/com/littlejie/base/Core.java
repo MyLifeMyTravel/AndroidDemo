@@ -1,6 +1,5 @@
 package com.littlejie.base;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -243,9 +242,8 @@ public class Core {
         }
     }
 
-    public static DisplayMetrics getDisplayMetrics(Activity activity) {
-        DisplayMetrics dm = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+    public static DisplayMetrics getDisplayMetrics() {
+        DisplayMetrics dm = mApplicationContext.getResources().getDisplayMetrics();
         return dm;
     }
 

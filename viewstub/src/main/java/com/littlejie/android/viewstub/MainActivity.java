@@ -1,38 +1,68 @@
 package com.littlejie.android.viewstub;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+import android.util.Log;
 
-import com.littlejie.ui.image.BaseImageView;
+import com.facebook.rebound.Spring;
+import com.facebook.rebound.SpringConfig;
+import com.facebook.rebound.SpringListener;
+import com.facebook.rebound.SpringSystem;
+import com.littlejie.base.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
-
-    private Button mTvShowStub;
-    private BaseImageView mIv;
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mTvShowStub = (Button) findViewById(R.id.btn_show_viewstub);
-        mTvShowStub.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent("com.littlejie.android.scanner"), 0);
-            }
-        });
-        mIv = (BaseImageView) findViewById(R.id.iv);
-        mIv.setImage("http://att.bbs.duowan.com/forum/201210/20/210446opy9p5pghu015p9u.jpg");
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-//        Toast.makeText(this, data.getStringExtra("result"), Toast.LENGTH_SHORT).show();
+    protected int getPageLayoutID() {
+        return R.layout.activity_main;
     }
+
+    @Override
+    protected void initData() {
+        SpringSystem springSystem = SpringSystem.create();
+        Spring spring = springSystem.createSpring();
+        spring.setSpringConfig(SpringConfig.fromOrigamiTensionAndFriction(170, 5));
+        spring.addListener(new MySpringListener());
+        spring.setCurrentValue(0.0);
+        spring.setEndValue(1);
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void initViewListener() {
+
+    }
+
+    private class MySpringListener implements SpringListener {
+
+        @Override
+        public void onSpringUpdate(Spring spring) {
+            Log.d(TAG, "onSpringUpdate");
+        }
+
+        @Override
+        public void onSpringAtRest(Spring spring) {
+
+        }
+
+        @Override
+        public void onSpringActivate(Spring spring) {
+
+        }
+
+        @Override
+        public void onSpringEndStateChange(Spring spring) {
+
+        }
+    }
+
 }

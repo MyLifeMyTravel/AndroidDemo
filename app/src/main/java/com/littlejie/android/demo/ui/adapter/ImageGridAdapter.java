@@ -1,9 +1,11 @@
 package com.littlejie.android.demo.ui.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 
 import com.littlejie.android.demo.R;
 import com.littlejie.ui.image.BaseImageView;
@@ -45,11 +47,21 @@ public class ImageGridAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = new BaseImageView(this.context, R.mipmap.ic_launcher);
+            ViewHolder vh = new ViewHolder();
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_grid_view, null);
+            vh.ivGridItem = (BaseImageView) convertView.findViewById(R.id.iv_grid_item);
+            convertView.setTag(vh);
         }
+        ViewHolder vh = (ViewHolder) convertView.getTag();
         String url = getItem(position).toString();
-        ((BaseImageView) convertView).setImage(url);
+        vh.ivGridItem.setImage(url);
+        //代码中重新设置一遍，xml中设置无效
+        vh.ivGridItem.setScaleType(ImageView.ScaleType.CENTER_CROP);
         return convertView;
+    }
+
+    private class ViewHolder {
+        BaseImageView ivGridItem;
     }
 
 }
