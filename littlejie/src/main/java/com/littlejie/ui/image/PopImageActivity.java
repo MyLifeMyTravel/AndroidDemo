@@ -19,7 +19,6 @@ import com.facebook.rebound.SpringConfig;
 import com.facebook.rebound.SpringListener;
 import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
-
 import com.littlejie.R;
 import com.littlejie.base.BaseActivity;
 import com.littlejie.ui.image.entity.ImageInfo;
@@ -30,6 +29,8 @@ import com.littlejie.utils.MiscUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by Lion on 2016/6/23.
@@ -43,6 +44,7 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
     private PagerAdapter mPagerAdapter;
     //模拟传入者中对应ImageView
     private BaseImageView mIvTemp;
+    private PhotoViewAttacher mAttacher;
 
     private float mScaleWidth, mScaleHeight;
     private int mScreenWidth, mScreenHeight;
@@ -81,6 +83,7 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
         mScreenHeight = MiscUtil.getDisplayHeight();
         mLstImage = generateImageList();
         mIvTemp = generateTempImageView(mSelectImageInfo, mLstImageUrl.get(mIndex));
+        mAttacher = new PhotoViewAttacher(mIvTemp);
         mHandler = new Handler();
         mSpring = SpringSystem
                 .create()
@@ -115,6 +118,7 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
             return;
         }
         mIvTemp.setImage(mLstImageUrl.get(position));
+        mAttacher.update();
         int a = mIndex / mNumColums;
         int b = mIndex % mNumColums;
         int a1 = position / mNumColums;
@@ -227,11 +231,11 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
     private List<View> generateImageList() {
         List<View> lstImage = new ArrayList<>();
         for (String url : mLstImageUrl) {
-            BaseImageView imageView = new BaseImageView(this, 0);
+            ZoomImageView imageView = new ZoomImageView(this, 0);
             ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             imageView.setLayoutParams(lp);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setAdjustViewBounds(true);
             imageView.setImage(url);
             lstImage.add(imageView);
@@ -241,6 +245,7 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
 
     private BaseImageView generateTempImageView(SelectImageInfo info, String url) {
         BaseImageView imageView = new BaseImageView(this, 0);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setLeft((int) info.getX());
         imageView.setTop((int) info.getY());
 
@@ -259,7 +264,6 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(width, height);
         lp.setMargins((int) x, (int) y, (mScreenWidth - ((int) x + width)), (mScreenHeight - ((int) y + height)));
         imageView.setLayoutParams(lp);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setImage(url);
         return imageView;
     }
@@ -299,6 +303,8 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
             mIvTemp.setScaleX(x);
             mIvTemp.setScaleY(y);
             if (currentValue == 1) {
+                Log.d(TAG, "mIvTemp:width=" + mIvTemp.getWidth() + ";height=" + mIvTemp.getHeight());
+                Log.d(TAG, "mViewPager Item:width=" + mLstImage.get(mIndex).getWidth() + ";height=" + mLstImage.get(mIndex).getHeight());
                 mViewPager.setVisibility(View.VISIBLE);
                 mHandler.postDelayed(new Runnable() {
                     public void run() {
