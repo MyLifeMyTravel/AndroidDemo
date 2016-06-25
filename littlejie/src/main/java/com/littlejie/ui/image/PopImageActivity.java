@@ -4,8 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.graphics.Rect;
-import android.os.Handler;
+import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -22,11 +21,13 @@ import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
 import com.littlejie.R;
 import com.littlejie.base.BaseActivity;
+import com.littlejie.base.Core;
 import com.littlejie.ui.image.entity.ImageInfo;
 import com.littlejie.ui.image.entity.SelectImageInfo;
 import com.littlejie.utils.Constants;
 import com.littlejie.utils.Logger;
 import com.littlejie.utils.MiscUtil;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,6 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
     private PagerAdapter mPagerAdapter;
     //模拟传入者中对应ImageView
     private BaseImageView mIvTemp;
-    private PhotoViewAttacher mAttacher;
 
     private float mScaleWidth, mScaleHeight;
     private int mScreenWidth, mScreenHeight;
@@ -55,8 +55,6 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
     private SelectImageInfo mSelectImageInfo;
     private List<String> mLstImageUrl;
     private List<View> mLstImage;
-
-    private Handler mHandler;
 
     private Spring mSpring = null;
 
@@ -77,28 +75,32 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
         mNumColums = intent.getIntExtra(Constants.PARAM_NUM_COLUMS, 3);
         mSelectImageInfo = (SelectImageInfo) intent.getSerializableExtra(Constants.PARAM_SELECT_IMAGE_INFO);
         mLstImageUrl = intent.getStringArrayListExtra(Constants.PARAM_IMAGE_INFO_LIST);
-        mImageInfo = new ImageInfo();
-        mImageInfo.setWidth(1280);
-        mImageInfo.setHeight(720);
+        getSelectImageInfo();
         mScreenWidth = MiscUtil.getDisplayWidth();
-        mScreenHeight = MiscUtil.getDisplayHeight()-getStatusBarHeight();
+        mScreenHeight = MiscUtil.getDisplayHeight() - MiscUtil.getStatusBarHeight();
         mLstImage = generateImageList();
-        generateTempImageView(mSelectImageInfo, mLstImageUrl.get(mIndex));
-        mAttacher = new PhotoViewAttacher(mIvTemp);
-        mHandler = new Handler();
+        mIvTemp = generateTempImageView(mSelectImageInfo, mLstImageUrl.get(mIndex));
         mSpring = SpringSystem
                 .create()
                 .createSpring()
                 .addListener(new MySpringListener());
     }
 
-    public int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
+    private void getSelectImageInfo() {
+        BaseImageView imageView = new BaseImageView(this, 0);
+        imageView.setImage(mLstImageUrl.get(mIndex), new Core.OnImageLoadListener() {
+            @Override
+            public void onLoadindComplete(String s, View v, Bitmap bitmap) {
+                mImageInfo = new ImageInfo();
+                mImageInfo.setWidth(bitmap.getWidth());
+                mImageInfo.setHeight(bitmap.getHeight());
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+
+            }
+        });
     }
 
     @Override
@@ -128,7 +130,6 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
             return;
         }
         mIvTemp.setImage(mLstImageUrl.get(position));
-        mAttacher.update();
         int a = mIndex / mNumColums;
         int b = mIndex % mNumColums;
         int a1 = position / mNumColums;
@@ -217,19 +218,23 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (mViewPager.getVisibility() == View.VISIBLE) {
-                mViewPager.setVisibility(View.GONE);
-                mIvTemp.setVisibility(View.VISIBLE);
-                mSpring.setSpringConfig(SpringConfig.fromOrigamiTensionAndFriction(1, 5));
-                mSpring.setEndValue(0);
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        hideImage();
-                    }
-                }, 300);
+                startHide();
             }
         }
         return true;
+    }
+
+    private void startHide() {
+        mViewPager.setVisibility(View.GONE);
+        mIvTemp.setVisibility(View.VISIBLE);
+        mSpring.setSpringConfig(SpringConfig.fromOrigamiTensionAndFriction(1, 5));
+        mSpring.setEndValue(0);
+        MiscUtil.runOnUIThreadDelayed(300, new Runnable() {
+            @Override
+            public void run() {
+                hideImage();
+            }
+        });
     }
 
     @Override
@@ -248,16 +253,22 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setAdjustViewBounds(true);
             imageView.setImage(url);
+            imageView.setOnViewTapClickListener(new PhotoViewAttacher.OnViewTapListener() {
+                @Override
+                public void onViewTap(View view, float v, float v1) {
+                    startHide();
+                }
+            });
             lstImage.add(imageView);
         }
         return lstImage;
     }
 
-    private void generateTempImageView(SelectImageInfo info, String url) {
-        mIvTemp = new BaseImageView(this, 0);
-        mIvTemp.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        mIvTemp.setLeft((int) info.getX());
-        mIvTemp.setTop((int) info.getY());
+    private BaseImageView generateTempImageView(SelectImageInfo info, String url) {
+        BaseImageView imageView = new BaseImageView(this, 0);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setLeft((int) info.getX());
+        imageView.setTop((int) info.getY());
 
         float x = mSelectImageInfo.getX();
         float y = mSelectImageInfo.getY();
@@ -273,8 +284,9 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
         }
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(width, height);
         lp.setMargins((int) x, (int) y, (mScreenWidth - ((int) x + width)), (mScreenHeight - ((int) y + height)));
-        mIvTemp.setLayoutParams(lp);
-        mIvTemp.setImage(url);
+        imageView.setLayoutParams(lp);
+        imageView.setImage(url);
+        return imageView;
     }
 
     public class PopImagePageAdapter extends PagerAdapter {
@@ -315,12 +327,12 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
                 Log.d(TAG, "mIvTemp:width=" + mIvTemp.getWidth() + ";height=" + mIvTemp.getHeight());
                 Log.d(TAG, "mViewPager Item:width=" + mLstImage.get(mIndex).getWidth() + ";height=" + mLstImage.get(mIndex).getHeight());
                 mViewPager.setVisibility(View.VISIBLE);
-                mHandler.postDelayed(new Runnable() {
+                MiscUtil.runOnUIThreadDelayed(300, new Runnable() {
+                    @Override
                     public void run() {
-                        //execute the task
                         mIvTemp.setVisibility(View.GONE);
                     }
-                }, 300);
+                });
             }
         }
 

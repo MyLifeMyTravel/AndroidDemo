@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 import com.littlejie.R;
+import com.littlejie.base.BaseApplication;
 import com.littlejie.base.Core;
 
 import java.io.File;
@@ -162,5 +163,23 @@ public class MiscUtil {
      */
     public static int px2dip(float pxValue) {
         return Core.px2dip(pxValue);
+    }
+
+    public static int getStatusBarHeight() {
+        return Core.getStatusBarHeight();
+    }
+
+    // 执行异步任务
+    public static void runOnUIThread(Runnable r) {
+        BaseApplication.runOnUIThread(r);
+    }
+
+    // 延时执行异步任务
+    public static void runOnUIThreadDelayed(long milliSec, Runnable r) {
+        BaseApplication.runDelayOnUIThread(r, milliSec);
+    }
+
+    public static void removeRunnable(Runnable r) {
+        BaseApplication.removeRunnable(r);
     }
 }

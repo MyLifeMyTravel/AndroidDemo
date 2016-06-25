@@ -286,6 +286,19 @@ public class Core {
         return (int) (pxValue / scale + 0.5f);
     }
 
+    /**
+     * 获取状态栏高度
+     * @return
+     */
+    public static int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getApplicationContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getApplicationContext().getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
     public static String getString(int resId) {
         return mApplicationContext.getResources().getString(resId);
     }

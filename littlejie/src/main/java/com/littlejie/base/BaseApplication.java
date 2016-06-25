@@ -2,6 +2,7 @@ package com.littlejie.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
 
 import com.littlejie.utils.Constants;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
@@ -20,12 +21,39 @@ import java.io.File;
  */
 public class BaseApplication extends Application {
 
+    /**
+     * uiThreadHandler
+     */
+    private static Handler uiThreadHandler = null;
+
+    /**
+     * uiThread
+     */
+    private static Thread uiThread = null;
+
+    public static void runOnUIThread(Runnable work) {
+        if (Thread.currentThread() != uiThread) {
+            uiThreadHandler.post(work);
+        } else {
+            work.run();
+        }
+    }
+
+    public static void runDelayOnUIThread(Runnable work, long time) {
+        uiThreadHandler.postDelayed(work, time);
+    }
+
+    public static void removeRunnable(Runnable work) {
+        uiThreadHandler.removeCallbacks(work);
+    }
+
     private static Context instance;
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
+        uiThreadHandler = new Handler();
         Core.initBase();
         initUIL(this);
     }

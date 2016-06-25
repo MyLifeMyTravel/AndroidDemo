@@ -19,7 +19,7 @@ public class ZoomImageView extends BaseImageView {
 
     public ZoomImageView(Context context, int resId) {
         super(context, resId);
-        init(context,null);
+        init(context, null);
     }
 
     public ZoomImageView(Context context, int resId, boolean stateful) {
@@ -29,11 +29,15 @@ public class ZoomImageView extends BaseImageView {
 
     public ZoomImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context,null);
+        init(context, null);
     }
 
     private void init(Context context, AttributeSet attrs) {
         attacher = new PhotoViewAttacher(this);
+    }
+
+    public void setOnViewTapClickListener(PhotoViewAttacher.OnViewTapListener listener) {
+        attacher.setOnViewTapListener(listener);
     }
 
     @Override
