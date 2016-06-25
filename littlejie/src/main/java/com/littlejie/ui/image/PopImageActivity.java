@@ -22,8 +22,6 @@ import com.facebook.rebound.SpringUtil;
 import com.littlejie.R;
 import com.littlejie.base.BaseActivity;
 import com.littlejie.base.Core;
-import com.littlejie.ui.image.entity.ImageInfo;
-import com.littlejie.ui.image.entity.SelectImageInfo;
 import com.littlejie.utils.Constants;
 import com.littlejie.utils.Logger;
 import com.littlejie.utils.MiscUtil;
@@ -51,8 +49,10 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
     private int mScreenWidth, mScreenHeight;
     private int mIndex;
     private int mNumColums;
-    private ImageInfo mImageInfo;
-    private SelectImageInfo mSelectImageInfo;
+    //图片宽高
+    private int mImageWidth, mImageHeight;
+    private float x, y;
+    private int mScaleImageWidth, mScaleImageHeight;
     private List<String> mLstImageUrl;
     private List<View> mLstImage;
 
@@ -73,13 +73,14 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
         }
         mIndex = intent.getIntExtra(Constants.PARAM_INDEX, 0);
         mNumColums = intent.getIntExtra(Constants.PARAM_NUM_COLUMS, 3);
-        mSelectImageInfo = (SelectImageInfo) intent.getSerializableExtra(Constants.PARAM_SELECT_IMAGE_INFO);
         mLstImageUrl = intent.getStringArrayListExtra(Constants.PARAM_IMAGE_INFO_LIST);
-        getSelectImageInfo();
+        x = intent.getFloatExtra("x", 0);
+        y = intent.getFloatExtra("y", 0);
+        mScaleImageWidth = intent.getIntExtra("width", 1);
+        mScaleImageHeight = intent.getIntExtra("height", 1);
+        mLstImage = generateImageList();
         mScreenWidth = MiscUtil.getDisplayWidth();
         mScreenHeight = MiscUtil.getDisplayHeight() - MiscUtil.getStatusBarHeight();
-        mLstImage = generateImageList();
-        mIvTemp = generateTempImageView(mSelectImageInfo, mLstImageUrl.get(mIndex));
         mSpring = SpringSystem
                 .create()
                 .createSpring()
@@ -91,9 +92,9 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
         imageView.setImage(mLstImageUrl.get(mIndex), new Core.OnImageLoadListener() {
             @Override
             public void onLoadindComplete(String s, View v, Bitmap bitmap) {
-                mImageInfo = new ImageInfo();
-                mImageInfo.setWidth(bitmap.getWidth());
-                mImageInfo.setHeight(bitmap.getHeight());
+                mImageWidth = bitmap.getWidth();
+                mImageHeight = bitmap.getHeight();
+                showImage();
             }
 
             @Override
@@ -116,7 +117,12 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
     @Override
     protected void initViewListener() {
         mViewPager.setOnPageChangeListener(this);
-        showImage();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getSelectImageInfo();
     }
 
     @Override
@@ -130,12 +136,17 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
             return;
         }
         mIvTemp.setImage(mLstImageUrl.get(position));
-        int a = mIndex / mNumColums;
-        int b = mIndex % mNumColums;
-        int a1 = position / mNumColums;
-        int b1 = position % mNumColums;
-        mSelectImageInfo.setY((a1 - a) * mSelectImageInfo.getHeight());
-        mSelectImageInfo.setX((b1 - b) * mSelectImageInfo.getHeight());
+        int py = mIndex / mNumColums;
+        int px = mIndex % mNumColums;
+        int originOffsetX = px * mScaleImageWidth;
+        int originOffsetY = py * mScaleImageHeight;
+        int py1 = position / mNumColums;
+        int px1 = position % mNumColums;
+        y = (py1 - py) * mScaleImageHeight + originOffsetY;
+        //position从0开始计数
+        x = (px1 - px) * mScaleImageWidth + originOffsetX;
+        Log.d(TAG, "传入点坐标：(" + px + "," + py + "),当前点坐标：(" + px1 + ";" + py1 + ")");
+        Log.d(TAG, "偏移量：(" + x + "," + y + ")");
     }
 
     @Override
@@ -149,12 +160,13 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
 
 
     private void showImage() {
+        mIvTemp = generateTempImageView(mLstImageUrl.get(mIndex));
         mViewContainer.addView(mIvTemp);
         AnimatorSet showAnimatorSet = new AnimatorSet();
 
         mSpring.setSpringConfig(SpringConfig.fromOrigamiTensionAndFriction(5, 5));
-        float translationX = mScreenWidth / 2 - (mSelectImageInfo.getX() + mSelectImageInfo.getWidth() / 2);
-        float translationY = mScreenHeight / 2 - (mSelectImageInfo.getY() + mSelectImageInfo.getHeight() / 2);
+        float translationX = mScreenWidth / 2 - (x + mScaleImageWidth / 2);
+        float translationY = mScreenHeight / 2 - (y + mScaleImageHeight / 2);
         showAnimatorSet.playTogether(
                 ObjectAnimator.ofFloat(mIvTemp, "translationX", translationX).setDuration(200),
                 ObjectAnimator.ofFloat(mIvTemp, "translationY", translationY).setDuration(200)
@@ -187,8 +199,8 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
     private void hideImage() {
         AnimatorSet hideAnimatiorSet = new AnimatorSet();
         hideAnimatiorSet.playTogether(
-                ObjectAnimator.ofFloat(mIvTemp, "translationX", mSelectImageInfo.getX()).setDuration(200),
-                ObjectAnimator.ofFloat(mIvTemp, "translationY", mSelectImageInfo.getY()).setDuration(200)
+                ObjectAnimator.ofFloat(mIvTemp, "translationX", x).setDuration(200),
+                ObjectAnimator.ofFloat(mIvTemp, "translationY", y).setDuration(200)
         );
         hideAnimatiorSet.addListener(new Animator.AnimatorListener() {
             @Override
@@ -264,26 +276,22 @@ public class PopImageActivity extends BaseActivity implements ViewPager.OnPageCh
         return lstImage;
     }
 
-    private BaseImageView generateTempImageView(SelectImageInfo info, String url) {
+    private BaseImageView generateTempImageView(String url) {
         BaseImageView imageView = new BaseImageView(this, 0);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView.setLeft((int) info.getX());
-        imageView.setTop((int) info.getY());
+        imageView.setLeft((int) x);
+        imageView.setTop((int) y);
 
-        float x = mSelectImageInfo.getX();
-        float y = mSelectImageInfo.getY();
-        int width = mSelectImageInfo.getWidth();
-        int height = mSelectImageInfo.getHeight();
-        mScaleWidth = 1.0f * mScreenWidth / width;
-        int imageHeight = (int) 1.0f * mImageInfo.getHeight() * mScreenWidth / mImageInfo.getWidth();
-        mScaleHeight = 1.0f * imageHeight / height;
+        mScaleWidth = 1.0f * mScreenWidth / mScaleImageWidth;
+        int imageHeight = (int) 1.0f * mImageHeight * mScreenWidth / mImageWidth;
+        mScaleHeight = 1.0f * imageHeight / mScaleImageHeight;
         if (imageHeight > mScreenHeight) {
-            mScaleHeight = 1.0f * mScreenHeight / height;
-            int imageWidth = (int) 1.0f * mImageInfo.getWidth() * mScreenHeight / mImageInfo.getHeight();
-            mScaleWidth = 1.0f * imageWidth / width;
+            mScaleHeight = 1.0f * mScreenHeight / mScaleImageHeight;
+            int imageWidth = (int) 1.0f * mImageWidth * mScreenHeight / mImageHeight;
+            mScaleWidth = 1.0f * imageWidth / mScaleImageWidth;
         }
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(width, height);
-        lp.setMargins((int) x, (int) y, (mScreenWidth - ((int) x + width)), (mScreenHeight - ((int) y + height)));
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(mScaleImageWidth, mScaleImageHeight);
+        lp.setMargins((int) x, (int) y, (mScreenWidth - ((int) x + mScaleImageWidth)), (mScreenHeight - ((int) y + mScaleImageHeight)));
         imageView.setLayoutParams(lp);
         imageView.setImage(url);
         return imageView;
