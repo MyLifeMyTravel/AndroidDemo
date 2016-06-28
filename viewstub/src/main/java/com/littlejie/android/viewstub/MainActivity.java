@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.littlejie.base.BaseActivity;
 import com.littlejie.ui.widget.UploadImageWidget;
+import com.littlejie.utils.MiscUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void processData() {
-
+        MiscUtil.showDefautToast(MiscUtil.getAppVersion());
     }
 
 }

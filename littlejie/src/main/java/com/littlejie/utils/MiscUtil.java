@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.net.Uri;
@@ -140,6 +141,44 @@ public class MiscUtil {
         }
 
         return resultData;
+    }
+
+    /**
+     * 获取应用Version
+     *
+     * @return
+     */
+    public static String getAppVersion() {
+        PackageManager manager;
+        PackageInfo info = null;
+        Context context = getApplicationContext();
+        manager = context.getPackageManager();
+        try {
+            info = manager.getPackageInfo(context.getPackageName(), 0);
+            return info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 获取VersionCode
+     *
+     * @return
+     */
+    public static int getAppVersionCode() {
+        PackageManager manager;
+        PackageInfo info = null;
+        Context context = getApplicationContext();
+        manager = context.getPackageManager();
+        try {
+            info = manager.getPackageInfo(context.getPackageName(), 0);
+            return info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public static DisplayMetrics getDisplayMetrics() {
