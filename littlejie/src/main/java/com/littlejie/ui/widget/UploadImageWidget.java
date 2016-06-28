@@ -2,7 +2,6 @@ package com.littlejie.ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,18 +62,22 @@ public class UploadImageWidget extends LinearLayout {
         }
     }
 
-    public void setOnImageListener(OnImageListener listener) {
-        mOnImageListener = listener;
-    }
-
     public void setData(List<String> lstData) {
         mLstUri = lstData;
         mAdapter.notifyDataSetChanged();
     }
 
+    public int getNumColums() {
+        return mGvUploadImage.getNumColumns();
+    }
+
+    public void setOnImageListener(OnImageListener listener) {
+        mOnImageListener = listener;
+    }
+
     public interface OnImageListener {
 
-        void onTakePhoto();
+        void onAddImage();
 
         void onDeleteImage(int position);
 
@@ -134,26 +137,24 @@ public class UploadImageWidget extends LinearLayout {
                 ViewHolder vh = new ViewHolder();
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_upload_image, null);
                 vh.ivImage = (BaseImageView) convertView.findViewById(R.id.iv_upload_image);
-                vh.ivImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 vh.ivDelete = (ImageView) convertView.findViewById(R.id.iv_delete);
                 convertView.setTag(vh);
             }
             ViewHolder vh = (ViewHolder) convertView.getTag();
             int type = getItemViewType(position);
             if (type == TYPE_SELECT) {
-                vh.ivImage.setImage(R.mipmap.camera);
+                vh.ivImage.setImage(R.mipmap.add_picture);
                 vh.ivDelete.setVisibility(GONE);
                 vh.ivImage.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (mOnImageListener != null) {
-                            mOnImageListener.onTakePhoto();
+                            mOnImageListener.onAddImage();
                         }
                     }
                 });
             } else {
-                vh.ivImage.setSDCardImage(Environment.getExternalStorageDirectory() + "/screen.png");
-//                vh.ivImage.setImage(R.mipmap.ic_launcher);
+                vh.ivImage.setImage(mLstUri.get(position));
                 vh.ivImage.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
