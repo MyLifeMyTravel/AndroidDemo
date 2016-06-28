@@ -26,6 +26,7 @@ public abstract class BaseActivity extends Activity {
         initData();
         initView();
         initViewListener();
+        processData();
     }
 
     @Override
@@ -66,6 +67,11 @@ public abstract class BaseActivity extends Activity {
     protected abstract int getPageLayoutID();
 
     /**
+     * 初始化数据
+     */
+    protected abstract void initData();
+
+    /**
      * 初始化页面控件
      */
     protected abstract void initView();
@@ -75,10 +81,7 @@ public abstract class BaseActivity extends Activity {
      */
     protected abstract void initViewListener();
 
-    /**
-     * 初始化数据
-     */
-    protected abstract void initData();
+    protected abstract void processData();
 
     protected void requestPermission(final String permission, String reason, final int requestCode) {
         this.requestCode = requestCode;

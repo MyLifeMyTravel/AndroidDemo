@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.littlejie.android.demo.R;
+import com.littlejie.android.demo.modules.widget.GridImageActivity;
 import com.littlejie.android.demo.modules.widget.RecyclerViewActivity;
 import com.littlejie.android.demo.modules.widget.TextViewActivity;
 import com.littlejie.android.demo.modules.widget.ViewPagerActivity;
@@ -27,7 +28,7 @@ public class MainActivity extends BaseActivity {
     static {
         Class[] otherActivities = {};
         Class[] widgetActivities = {ViewPagerActivity.class, RecyclerViewActivity.class,
-                TextViewActivity.class};
+                TextViewActivity.class, GridImageActivity.class};
 
         mNavMap.put(R.id.navigation_other, otherActivities);
         mNavMap.put(R.id.navigation_widget, widgetActivities);
@@ -63,6 +64,11 @@ public class MainActivity extends BaseActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void processData() {
+
     }
 
     @Override

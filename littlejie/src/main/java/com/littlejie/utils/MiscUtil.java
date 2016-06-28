@@ -6,12 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.View;
 
 import com.littlejie.R;
+import com.littlejie.base.BaseApplication;
 import com.littlejie.base.Core;
 
 import java.io.File;
@@ -139,17 +142,54 @@ public class MiscUtil {
         return resultData;
     }
 
-    public static DisplayMetrics getDisplayMetrics(Activity activity) {
-        return Core.getDisplayMetrics(activity);
+    public static DisplayMetrics getDisplayMetrics() {
+        return Core.getDisplayMetrics();
     }
 
     // 获取屏幕宽度，返回像素值
-    public static int getDisplayWidth(Activity activity) {
-        return Core.getDisplayMetrics(activity).widthPixels;
+    public static int getDisplayWidth() {
+        return Core.getDisplayMetrics().widthPixels;
     }
 
     // 获取屏幕高度，返回像素值
-    public static int getDisplayHeight(Activity activity) {
-        return Core.getDisplayMetrics(activity).heightPixels;
+    public static int getDisplayHeight() {
+        return Core.getDisplayMetrics().heightPixels;
+    }
+
+    public static int dip2px(float dpValue) {
+        return Core.dip2px(dpValue);
+    }
+
+    /**
+     * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+     */
+    public static int px2dip(float pxValue) {
+        return Core.px2dip(pxValue);
+    }
+
+    public static int getStatusBarHeight() {
+        return Core.getStatusBarHeight();
+    }
+
+    public static Point getLocationOnScreen(View view) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int x = location[0];
+        int y = location[1];
+        return new Point(x, y);
+    }
+
+    // 执行异步任务
+    public static void runOnUIThread(Runnable r) {
+        BaseApplication.runOnUIThread(r);
+    }
+
+    // 延时执行异步任务
+    public static void runOnUIThreadDelayed(long milliSec, Runnable r) {
+        BaseApplication.runDelayOnUIThread(r, milliSec);
+    }
+
+    public static void removeRunnable(Runnable r) {
+        BaseApplication.removeRunnable(r);
     }
 }

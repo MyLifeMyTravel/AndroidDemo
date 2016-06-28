@@ -35,6 +35,11 @@ public class TextViewActivity extends BaseActivity {
     }
 
     @Override
+    protected void processData() {
+
+    }
+
+    @Override
     protected void initData() {
 
     }

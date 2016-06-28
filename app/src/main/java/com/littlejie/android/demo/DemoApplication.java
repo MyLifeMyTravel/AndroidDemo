@@ -1,13 +1,12 @@
 package com.littlejie.android.demo;
 
-import android.app.Application;
-
+import com.littlejie.base.BaseApplication;
 import com.squareup.leakcanary.LeakCanary;
 
 /**
  * Created by Lion on 2016/4/21.
  */
-public class DemoApplication extends Application {
+public class DemoApplication extends BaseApplication {
 
     @Override
     public void onCreate() {

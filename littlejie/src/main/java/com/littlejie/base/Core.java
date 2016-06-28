@@ -1,6 +1,5 @@
 package com.littlejie.base;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -13,9 +12,12 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.littlejie.crash.CrashHandler;
+import com.littlejie.utils.Constants;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -43,6 +45,27 @@ public class Core {
 
     public static void initBase() {
         mApplicationContext = BaseApplication.getInstance();
+        CrashHandler.getInstance().init(mApplicationContext
+                , Constants.PATH_CRASH_FOLDER);
+        mDIODiskCache = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .imageScaleType(ImageScaleType.EXACTLY);
+
+        mDIOMemCache = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(false)
+                .imageScaleType(ImageScaleType.EXACTLY);
+
+        mDIODiskCacheRec = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .imageScaleType(ImageScaleType.EXACTLY);
+
+        mDIOMemCacheRec = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(false)
+                .imageScaleType(ImageScaleType.EXACTLY);
     }
 
     public static Typeface getTypeface() {
@@ -219,9 +242,8 @@ public class Core {
         }
     }
 
-    public static DisplayMetrics getDisplayMetrics(Activity activity) {
-        DisplayMetrics dm = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+    public static DisplayMetrics getDisplayMetrics() {
+        DisplayMetrics dm = mApplicationContext.getResources().getDisplayMetrics();
         return dm;
     }
 
@@ -249,6 +271,32 @@ public class Core {
 
     public static int getPixel(int resId) {
         return mApplicationContext.getResources().getDimensionPixelSize(resId);
+    }
+
+    public static int dip2px(float dpValue) {
+        final float scale = getApplicationContext().getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+    /**
+     * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+     */
+    public static int px2dip(float pxValue) {
+        final float scale = getApplicationContext().getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+    }
+
+    /**
+     * 获取状态栏高度
+     * @return
+     */
+    public static int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getApplicationContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getApplicationContext().getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     public static String getString(int resId) {
