@@ -2,12 +2,15 @@ package com.littlejie.ui.image;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
 import com.littlejie.R;
 import com.littlejie.base.Core;
+
+import java.io.File;
 
 /**
  * Created by Lion on 2016/6/23.
@@ -74,14 +77,14 @@ public class BaseImageView extends ImageView {
         }
     }
 
-    public void setImage(String url) {
-        if (TextUtils.isEmpty(url)) {
+    public void setImage(String uri) {
+        if (TextUtils.isEmpty(uri)) {
             return;
         }
         if (mRadius != 0) {
-            Core.setDiskCachedImage(url, this, mImageResId, mRadius);
+            Core.setDiskCachedImage(uri, this, mImageResId, mRadius);
         } else {
-            Core.setDiskCachedImage(url, this, mImageResId);
+            Core.setDiskCachedImage(uri, this, mImageResId);
         }
     }
 
@@ -96,15 +99,12 @@ public class BaseImageView extends ImageView {
         }
     }
 
-    private String getDrawableRes(String res) {
-        if (TextUtils.isEmpty(res)) {
-            return null;
+    public void setSDCardImage(String path) {
+        if (TextUtils.isEmpty(path)) {
+            return;
         }
-
-        int index = res.lastIndexOf('/');
-        if (index != -1) {
-            return "R.drawable." + res.substring(index + 1, res.length());
-        }
-        return null;
+        File file = new File(path);
+        Uri uri = Uri.fromFile(file);
+        setImage(uri.toString());
     }
 }

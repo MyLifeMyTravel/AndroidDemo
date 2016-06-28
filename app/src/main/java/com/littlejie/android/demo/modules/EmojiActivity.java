@@ -65,6 +65,11 @@ public class EmojiActivity extends BaseActivity {
     }
 
     @Override
+    protected void processData() {
+
+    }
+
+    @Override
     protected void initData() {
 
     }

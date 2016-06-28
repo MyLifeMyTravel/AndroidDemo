@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.View;
 
 import com.littlejie.R;
 import com.littlejie.base.BaseApplication;
@@ -167,6 +169,14 @@ public class MiscUtil {
 
     public static int getStatusBarHeight() {
         return Core.getStatusBarHeight();
+    }
+
+    public static Point getLocationOnScreen(View view) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int x = location[0];
+        int y = location[1];
+        return new Point(x, y);
     }
 
     // 执行异步任务

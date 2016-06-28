@@ -26,6 +26,7 @@ public abstract class BaseActivity extends Activity {
         initData();
         initView();
         initViewListener();
+        processData();
     }
 
     @Override
@@ -79,6 +80,8 @@ public abstract class BaseActivity extends Activity {
      * 初始化控件监听器
      */
     protected abstract void initViewListener();
+
+    protected abstract void processData();
 
     protected void requestPermission(final String permission, String reason, final int requestCode) {
         this.requestCode = requestCode;

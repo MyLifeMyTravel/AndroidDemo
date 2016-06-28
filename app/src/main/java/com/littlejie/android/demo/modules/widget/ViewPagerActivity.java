@@ -41,6 +41,11 @@ public class ViewPagerActivity extends BaseActivity {
     }
 
     @Override
+    protected void processData() {
+
+    }
+
+    @Override
     protected void initData() {
         mLstView = new ArrayList<>();
         for (int i = 0; i < color.length; i++) {

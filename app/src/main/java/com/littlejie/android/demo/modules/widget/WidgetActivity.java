@@ -43,6 +43,11 @@ public class WidgetActivity extends BaseActivity {
     }
 
     @Override
+    protected void processData() {
+
+    }
+
+    @Override
     protected void initData() {
 
     }

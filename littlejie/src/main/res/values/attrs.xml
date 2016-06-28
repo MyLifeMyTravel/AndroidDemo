@@ -17,4 +17,9 @@
             <enum name="ARGB_8888" value="5"></enum>
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="UploadImageWidget">
+        <attr name="numColums" format="integer"></attr>
+        <attr name="maxSize" format="integer"></attr>
+    </declare-styleable>
 </resources>

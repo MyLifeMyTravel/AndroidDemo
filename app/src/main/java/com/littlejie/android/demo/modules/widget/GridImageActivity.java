@@ -1,6 +1,7 @@
 package com.littlejie.android.demo.modules.widget;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -8,8 +9,9 @@ import android.widget.GridView;
 import com.littlejie.android.demo.R;
 import com.littlejie.android.demo.ui.adapter.ImageGridAdapter;
 import com.littlejie.base.BaseActivity;
+import com.littlejie.ui.image.ImageRelevantInfo;
 import com.littlejie.ui.image.PopImageActivity;
-import com.littlejie.utils.Constants;
+import com.littlejie.utils.MiscUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,23 +51,25 @@ public class GridImageActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(GridImageActivity.this, PopImageActivity.class);
-                intent.putExtra(Constants.PARAM_INDEX, position);
-                intent.putExtra("x", view.getLeft());
-                intent.putExtra("y", view.getTop());
-                intent.putExtra("width", view.getWidth());
-                intent.putExtra("height", view.getHeight());
-                intent.putExtra("parentWidth", mGridImage.getHeight());
-                intent.putExtra("parentHeight", mGridImage.getHeight());
-                intent.putExtra(Constants.PARAM_NUM_COLUMS, mGridImage.getNumColumns());
-                intent.putStringArrayListExtra(Constants.PARAM_IMAGE_INFO_LIST, (ArrayList<String>) mLstImage);
+                Point point = MiscUtil.getLocationOnScreen(view);
+                ImageRelevantInfo info = new ImageRelevantInfo(position,
+                        point.x, point.y,
+                        view.getWidth(), view.getHeight(),
+                        mGridImage.getNumColumns(), mLstImage);
+                intent.putExtra("image", info);
                 startActivity(intent);
             }
         });
     }
 
+    @Override
+    protected void processData() {
+
+    }
+
     private List<String> generateImageUrlList() {
         List<String> lstImage = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 2; i++) {
             for (int j = 0; j < urls.length; j++) {
                 lstImage.add(urls[j]);
             }

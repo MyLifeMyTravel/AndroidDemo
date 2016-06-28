@@ -6,27 +6,8 @@
     android:orientation="vertical"
     tools:context="com.littlejie.android.viewstub.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Hello World!" />
-
-    <Button
-        android:id="@+id/btn_show_viewstub"
+    <com.littlejie.ui.widget.UploadImageWidget
+        android:id="@+id/up"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="点我显示ViewStub" />
-
-    <ViewStub
-        android:id="@+id/viewstub"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout="@layout/stub_test" />
-
-    <com.littlejie.ui.image.BaseImageView
-        android:id="@+id/iv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"></com.littlejie.ui.widget.UploadImageWidget>
 </LinearLayout>

@@ -1,21 +1,18 @@
 package com.littlejie.android.viewstub;
 
-import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 
-import com.facebook.rebound.Spring;
-import com.facebook.rebound.SpringConfig;
-import com.facebook.rebound.SpringListener;
-import com.facebook.rebound.SpringSystem;
 import com.littlejie.base.BaseActivity;
+import com.littlejie.ui.widget.UploadImageWidget;
+import com.littlejie.utils.MiscUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
+    private UploadImageWidget uploadImageWidget;
+    private List<String> lst;
 
     @Override
     protected int getPageLayoutID() {
@@ -24,17 +21,30 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        SpringSystem springSystem = SpringSystem.create();
-        Spring spring = springSystem.createSpring();
-        spring.setSpringConfig(SpringConfig.fromOrigamiTensionAndFriction(170, 5));
-        spring.addListener(new MySpringListener());
-        spring.setCurrentValue(0.0);
-        spring.setEndValue(1);
+        lst = new ArrayList<>();
     }
 
     @Override
     protected void initView() {
+        uploadImageWidget = (UploadImageWidget) findViewById(R.id.up);
+        uploadImageWidget.setOnImageListener(new UploadImageWidget.OnImageListener() {
+            @Override
+            public void onTakePhoto() {
+                lst.add("0");
+                uploadImageWidget.setData(lst);
+            }
 
+            @Override
+            public void onDeleteImage(int position) {
+                lst.remove(position);
+                uploadImageWidget.setData(lst);
+            }
+
+            @Override
+            public void onImageClick(View v, int position) {
+                MiscUtil.showDefautToast("替换图片" + position);
+            }
+        });
     }
 
     @Override
@@ -42,27 +52,9 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    private class MySpringListener implements SpringListener {
+    @Override
+    protected void processData() {
 
-        @Override
-        public void onSpringUpdate(Spring spring) {
-            Log.d(TAG, "onSpringUpdate");
-        }
-
-        @Override
-        public void onSpringAtRest(Spring spring) {
-
-        }
-
-        @Override
-        public void onSpringActivate(Spring spring) {
-
-        }
-
-        @Override
-        public void onSpringEndStateChange(Spring spring) {
-
-        }
     }
 
 }
