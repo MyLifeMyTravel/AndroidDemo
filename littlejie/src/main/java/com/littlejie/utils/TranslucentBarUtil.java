@@ -15,6 +15,12 @@ import com.littlejie.manager.SystemBarTintManager;
  */
 public class TranslucentBarUtil {
 
+    /**
+     * 设置透明栏(Translucent)颜色，当color=0时，透明
+     *
+     * @param activity
+     * @param color
+     */
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static void setTranslucentBar(@NonNull Activity activity, int color) {
         activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -28,6 +34,23 @@ public class TranslucentBarUtil {
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static void setTranslucentBar(@NonNull Activity activity, String color) {
+        int parseColor = Color.parseColor(color);
+        setTranslucentBar(activity, parseColor);
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static void setNavigationBar(@NonNull Activity activity, int color) {
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        ViewGroup rootView = (ViewGroup) activity.getWindow().getDecorView();
+        rootView.setFitsSystemWindows(true);
+        rootView.setClipToPadding(true);
+        SystemBarTintManager tintManager = new SystemBarTintManager(activity);
+        tintManager.setNavigationBarTintEnabled(true);
+        tintManager.setNavigationBarTintColor(color);
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static void setNavigationBar(@NonNull Activity activity, String color) {
         int parseColor = Color.parseColor(color);
         setTranslucentBar(activity, parseColor);
     }

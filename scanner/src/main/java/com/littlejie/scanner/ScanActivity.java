@@ -8,9 +8,7 @@ import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -40,7 +38,6 @@ public class ScanActivity extends Activity {
     private OnDecodeFinishListener onDecodeFinishListener = new OnDecodeFinishListener() {
         @Override
         public void onDecodeFinish(Result result, Bitmap barcode) {
-            playBeepSoundAndVibrate();
             String resultText = result.getText();
             if (TextUtils.isEmpty(resultText)) {
                 Toast.makeText(ScanActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
@@ -132,18 +129,6 @@ public class ScanActivity extends Activity {
     }
 
     private static final long VIBRATE_DURATION = 200L;
-
-    private void playBeepSoundAndVibrate() {
-        Log.d("ScanActivity", "playBeep=" + playBeep);
-        Log.d("ScanActivity", "mediaPlayer=" + mediaPlayer);
-        if (playBeep && mediaPlayer != null) {
-            mediaPlayer.start();
-        }
-        if (vibrate) {
-            Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            vibrator.vibrate(VIBRATE_DURATION);
-        }
-    }
 
     /**
      * When the beep has finished playing, rewind to queue up another one.

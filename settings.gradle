@@ -1,1 +1,1 @@
-include ':app', ':littlejie', ':accessibility', ':viewstub', ':scanner', ':dialogplus', ':translucentbar'
+include ':app', ':littlejie', ':scanner'

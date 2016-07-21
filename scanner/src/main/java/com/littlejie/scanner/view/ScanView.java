@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -132,6 +134,11 @@ public class ScanView extends LinearLayout implements SurfaceHolder.Callback, IH
     @Override
     public void handleDecode(Result result, Bitmap barcode) {
         Log.d(TAG, "has decode result");
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(200L);
+        MediaPlayer mediaPlayer01;
+        mediaPlayer01 = MediaPlayer.create(context, R.raw.beep);
+        mediaPlayer01.start();
         if (onDecodeFinishListener != null) {
             onDecodeFinishListener.onDecodeFinish(result, barcode);
         } else {

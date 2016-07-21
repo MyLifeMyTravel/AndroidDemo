@@ -1,6 +1,7 @@
 package com.littlejie.android.demo.modules.main;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import com.littlejie.android.demo.modules.widget.ViewPagerActivity;
 import com.littlejie.android.demo.modules.widget.WidgetActivity;
 import com.littlejie.base.BaseActivity;
 import com.littlejie.manager.ActivityManager;
+import com.littlejie.scanner.ScanActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,7 +70,12 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void processData() {
-
+        for (int i = 0; i < 100; i++) {
+            MediaPlayer mediaPlayer01;
+            mediaPlayer01 = MediaPlayer.create(getBaseContext(), R.raw.beep);
+            mediaPlayer01.start();
+        }
+        ActivityManager.startActivity(this, ScanActivity.class);
     }
 
     @Override
