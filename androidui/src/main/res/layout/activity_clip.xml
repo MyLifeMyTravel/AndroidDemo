@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/normal_height"
+    android:clipChildren="false"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv1"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/ic_launcher" />
+
+    <ImageView
+        android:id="@+id/iv2"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/ic_launcher" />
+
+    <ImageView
+        android:id="@+id/iv3"
+        android:layout_width="0dip"
+        android:layout_height="@dimen/special_height"
+        android:layout_gravity="bottom"
+        android:layout_weight="1.0"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/ic_launcher" />
+
+    <ImageView
+        android:id="@+id/iv4"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/ic_launcher" />
+
+    <ImageView
+        android:id="@+id/iv5"
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/ic_launcher" />
+
+</LinearLayout>
