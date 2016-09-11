@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.littlejie.demoutil.Util;
+
 import java.util.List;
 
 public class EmptyListViewActivity extends Activity {
@@ -19,7 +21,7 @@ public class EmptyListViewActivity extends Activity {
 
         mLv = (ListView) findViewById(R.id.lv);
         mLv.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, Utils.generateString(0)));
+                android.R.layout.simple_list_item_1, Util.generateString(0)));
         mLv.setEmptyView(findViewById(android.R.id.empty));
     }
 

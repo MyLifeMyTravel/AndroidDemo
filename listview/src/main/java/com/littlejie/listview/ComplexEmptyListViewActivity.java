@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.littlejie.demoutil.Util;
+
 public class ComplexEmptyListViewActivity extends Activity {
 
     private ListView mLv;
@@ -18,7 +20,7 @@ public class ComplexEmptyListViewActivity extends Activity {
 
         mLv = (ListView) findViewById(R.id.lv);
         mLv.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, Utils.generateString(10)));
+                android.R.layout.simple_list_item_1, Util.generateString(10)));
 
         mEmptyView = new EmptyView(this);
         //此处是重点,如果不将mEmptyView添加进当前的ViewGroup,mEmptyView都不可见

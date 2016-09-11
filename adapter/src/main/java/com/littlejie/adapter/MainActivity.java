@@ -1,7 +1,6 @@
-package com.littlejie.listview;
+package com.littlejie.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.littlejie.demoutil.ItemInfo;
+import com.littlejie.demoutil.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,22 +24,22 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         mLv = (ListView) findViewById(R.id.lv);
-        mItems = generateItem();
-        mLv.setAdapter(new ArrayAdapter<ItemInfo>(this, android.R.layout.simple_list_item_1, mItems));
+        mItems = generateItems();
+        mLv.setAdapter(new ArrayAdapter<ItemInfo>(this, android.R.layout.simple_list_item_1, generateItems()));
         mLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(MainActivity.this, mItems.get(position).getClz()));
+                Util.startActivity(MainActivity.this, mItems.get(position).getClz());
             }
         });
-
     }
 
-    private List<ItemInfo> generateItem() {
-        List<ItemInfo> infos = new ArrayList<>();
-        infos.add(new ItemInfo("简单的emptyView", EmptyListViewActivity.class));
-        infos.add(new ItemInfo("复杂的emptyView", ComplexEmptyListViewActivity.class));
-        return infos;
+    private List<ItemInfo> generateItems() {
+        List<ItemInfo> items = new ArrayList<>();
+        items.add(new ItemInfo("最简单的ArrayAdapter", SimplestArrayAdapterActivity.class));
+        items.add(new ItemInfo("稍微复杂的ArrayAdapter", MiddleArrayAdapterActivity.class));
+        items.add(new ItemInfo("最复杂的ArrayAdapter", HardestArrayAdapterActivity.class));
+        items.add(new ItemInfo("ArrayAdapter的List操作", ListActionActivity.class));
+        return items;
     }
-
 }

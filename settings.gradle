@@ -1,1 +1,1 @@
-include ':app', ':littlejie', ':scanner', ':androidui', ':popupfabmenu', ':listview'
+include ':app', ':littlejie', ':scanner', ':androidui', ':popupfabmenu', ':listview', ':adapter', ':demoutil'

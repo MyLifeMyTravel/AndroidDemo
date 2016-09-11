@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.littlejie.listview">
+    package="com.littlejie.adapter">
 
     <application
         android:allowBackup="true"
@@ -15,9 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EmptyListViewActivity"></activity>
-        <activity android:name=".ComplexEmptyListViewActivity"></activity>
-        <activity android:name=".ItemPositionActivity"></activity>
+        <activity android:name=".SimplestArrayAdapterActivity" />
+        <activity android:name=".HardestArrayAdapterActivity" />
+        <activity android:name=".MiddleArrayAdapterActivity" />
+        <activity android:name=".ListActionActivity"></activity>
     </application>
 
 </manifest>
