@@ -1,0 +1,77 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
+
+    //默认配置,所有 productFlavors 都会继承 defaultConfig 中配置的属性
+    defaultConfig {
+        //默认的 applicationId,一般与 AndroidManifest.xml 文件 package属性相同
+        applicationId "com.littlejie.multichannel"
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+    }
+
+    // productFlavors 定义了一个应用的自定义构建版本
+    //一个单一的项目可以同时定义多个不同的 flavor 来改变应用的输出。
+    // productFlavors 这个概念是为了解决不同的版本之间的差异非常小的情况，通常用于区分同一个应用的不同渠道/客户等，可包含少量业务功能差别。
+    // productFlavors 中的 flavor 不能跟 buildType 中的一样,否则会报: "ProductFlavor names cannot collide with BuildType names"
+    productFlavors {
+
+        //默认版本,不设置 applicationId ,继承 defaultConfig 中的配置
+        flavors_default {
+            manifestPlaceholders = [UMENG_CHANNEL: "defalut"]
+        }
+
+        //开发版本, applicationId 替换为 com.littlejie.multichannel.dev
+        flavors_dev {
+            applicationId "com.littlejie.multichannel.dev"
+            manifestPlaceholders = [UMENG_CHANNEL: "dev"]
+        }
+
+        //发布版本, applicationId 替换为 com.littlejie.multichannel.dev
+        flavors_release {
+            applicationId "com.littlejie.multichannel.release"
+            manifestPlaceholders = [UMENG_CHANNEL: "release"]
+        }
+
+    }
+
+    //定义签名属性
+    signingConfigs {
+        flavors_default {
+            //如果签名文件在项目的根目录下,则可以这么写
+            storeFile file("../littlejie.jks")
+            storePassword "littlejie"
+            keyAlias "littlejie"
+            keyPassword "littlejie"
+        }
+
+        flavors_dev {
+            storeFile file("../littlejie_dev.jks")
+            storePassword "littlejie"
+            keyAlias "littlejie"
+            keyPassword "littlejie"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true
+
+            //多个 flavor ,指定 flavor 使用指定 签名
+            productFlavors.flavors_default.signingConfig signingConfigs.flavors_default
+            productFlavors.flavors_dev.signingConfig signingConfigs.flavors_dev
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:24.1.1'
+}

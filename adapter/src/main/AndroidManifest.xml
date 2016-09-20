@@ -15,10 +15,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SimplestArrayAdapterActivity" />
-        <activity android:name=".HardestArrayAdapterActivity" />
-        <activity android:name=".MiddleArrayAdapterActivity" />
-        <activity android:name=".ListActionActivity"></activity>
+        <activity android:name=".array.SimplestArrayAdapterActivity" />
+        <activity android:name=".array.HardestArrayAdapterActivity" />
+        <activity android:name=".array.MiddleArrayAdapterActivity" />
+        <activity android:name=".array.ListActionActivity" />
+        <activity android:name=".cursor.MyCursorAdapterActivity" />
+        <activity android:name=".cursor.MyResourceCursorAdapterActivity" />
+        <activity android:name=".cursor.MySimpleCursorAdapterActivity" />
+        <activity android:name=".array.ArrayAdapterActivity" />
+        <activity android:name=".cursor.CursorAdapterActivity"></activity>
     </application>
 
 </manifest>

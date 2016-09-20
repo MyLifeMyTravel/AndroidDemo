@@ -1,4 +1,4 @@
-package com.littlejie.adapter;
+package com.littlejie.adapter.array;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.littlejie.adapter.R;
 import com.littlejie.demoutil.Util;
 
 import java.util.ArrayList;

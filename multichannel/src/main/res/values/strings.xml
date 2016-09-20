@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MultiChannel</string>
+    <string name="string_merge">我是string,我没被合并</string>
+</resources>

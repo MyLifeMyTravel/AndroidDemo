@@ -1,0 +1,3 @@
+<resources>
+    <string name="string_merge">我是dev_string,我会把string合并</string>
+</resources>
