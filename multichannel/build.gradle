@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: com.yidao.pack.PostPackPlugin
 
 android {
     compileSdkVersion 24
@@ -64,12 +65,68 @@ android {
             shrinkResources true
 
             //多个 flavor ,指定 flavor 使用指定 签名
-            productFlavors.flavors_default.signingConfig signingConfigs.flavors_default
-            productFlavors.flavors_dev.signingConfig signingConfigs.flavors_dev
+            signingConfig signingConfigs.flavors_default
+//            productFlavors.flavors_dev.signingConfig signingConfigs.flavors_dev
         }
     }
 }
 
+postpack {
+    enable = true
+    supportClean = true
+    supportEncrpyt = true
+    supportMultiChannel = false
+}
+
+//def lineOne = null
+//task a {
+//    File stringFile = file('src/flavors_dev/res/values/strings.xml');
+//    def lines = stringFile.readLines();
+//    for (int i = 0; i < lines.size(); i++) {
+//        if (i == 1) {
+//            lineOne = lines.get(i)
+//        }
+//    }
+//    def text = new StringBuffer()
+//    lines.each {
+//        text.append(it).append("\n")
+//    }
+//    stringFile.write(text.toString())
+//    println("This is a Test")
+//}
+//
+//task readProperties {
+//    def properties = file("gradle.properties")
+//    Properties p = new Properties();
+//    properties.withInputStream { stream ->
+//        p.load(stream)
+//    }
+//    println(p.CHANNEL)
+//}
+//
+//task taskY {
+//    doLast {
+//        File text = file("text.txt")
+//        text.write("This is a test")
+//    }
+//    println 'taskY'
+//}
+//
+////有Action的task
+//task actionTask {
+//    doFirst {
+//        println("doFirst")
+//    }
+//
+//    doLast {
+//        println("doLast")
+//    }
+//    println 'I am actionTask'
+//}
+//
+//actionTask.doLast {
+//    println("fhewfbw")
+//}
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
