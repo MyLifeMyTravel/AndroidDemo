@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.littlejie.notification">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SimpleNotificationActivity" />
+        <activity android:name=".NotificationPriorityActivity" />
+        <activity android:name=".TaskStackBuilderActivity" />
+        <!-- parentActivityName 属性用于点击 Notification 跳转到 Activity 按返回键时返回的界面 -->
+        <activity
+            android:name=".result.NormalResultActivity"
+            android:parentActivityName=".MainActivity">
+
+            <!-- 兼容 Android 4.0.3 及更早的版本 -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <!-- <activity android:name=".ResultActivity"></activity> -->
+        <activity
+            android:name=".result.SpecailResultActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:taskAffinity="" />
+        <activity android:name=".ProgressNotifyActivity" />
+        <activity android:name=".ExpandNotifyActivity"></activity>
+    </application>
+
+</manifest>
