@@ -11,6 +11,7 @@ import android.widget.Button;
 
 public class SimpleNotificationActivity extends Activity implements View.OnClickListener {
 
+    //Notification.FLAG_FOREGROUND_SERVICE    //表示正在运行的服务
     public static final String NOTIFICATION_TAG = "littlejie";
     public static final int DEFAULT_NOTIFICATION_ID = 1;
 
@@ -101,6 +102,9 @@ public class SimpleNotificationActivity extends Activity implements View.OnClick
         }
     }
 
+    /**
+     * 发送最简单的通知,该通知的ID = 1
+     */
     private void sendNotification() {
         //这里使用 NotificationCompat 而不是 Notification ,因为 Notification 需要 API 16 才能使用
         //NotificationCompat 存在于 V4 Support Library
@@ -111,6 +115,10 @@ public class SimpleNotificationActivity extends Activity implements View.OnClick
         mNotificationManager.notify(DEFAULT_NOTIFICATION_ID, builder.build());
     }
 
+    /**
+     * 使用notify(String tag, int id, Notification notification)方法发送通知
+     * 移除对应通知需使用 cancel(String tag, int id)
+     */
     private void sendNotificationWithTag() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -119,6 +127,9 @@ public class SimpleNotificationActivity extends Activity implements View.OnClick
         mNotificationManager.notify(NOTIFICATION_TAG, DEFAULT_NOTIFICATION_ID, builder.build());
     }
 
+    /**
+     * 循环发送十个通知
+     */
     private void sendTenNotifications() {
         for (int i = 0; i < 10; i++) {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
@@ -129,6 +140,11 @@ public class SimpleNotificationActivity extends Activity implements View.OnClick
         }
     }
 
+    /**
+     * 设置FLAG_NO_CLEAR
+     * 该 flag 表示该通知不能被状态栏的清除按钮给清除掉,也不能被手动清除,但能通过 cancel() 方法清除
+     * Notification.flags属性可以通过 |= 运算叠加效果
+     */
     private void sendFlagNoClearNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -142,6 +158,10 @@ public class SimpleNotificationActivity extends Activity implements View.OnClick
         mNotificationManager.notify(DEFAULT_NOTIFICATION_ID, notification);
     }
 
+    /**
+     * 设置FLAG_NO_CLEAR
+     * 该 flag 表示用户单击通知后自动消失
+     */
     private void sendFlagAutoCancelNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -154,6 +174,10 @@ public class SimpleNotificationActivity extends Activity implements View.OnClick
         mNotificationManager.notify(DEFAULT_NOTIFICATION_ID, notification);
     }
 
+    /**
+     * 设置FLAG_NO_CLEAR
+     * 该 flag 表示发起正在运行事件（活动中）
+     */
     private void sendFlagOngoingEventNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)

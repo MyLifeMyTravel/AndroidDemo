@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.littlejie.notification">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -35,7 +37,8 @@
             android:launchMode="singleTask"
             android:taskAffinity="" />
         <activity android:name=".ProgressNotifyActivity" />
-        <activity android:name=".ExpandNotifyActivity"></activity>
+        <activity android:name=".ExpandNotifyActivity" />
+        <activity android:name=".NotificationEffectActivity"></activity>
     </application>
 
 </manifest>
