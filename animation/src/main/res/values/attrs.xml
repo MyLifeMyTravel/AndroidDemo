@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SubActionView">
+        <attr name="icon" format="reference"></attr>
+        <attr name="title" format="reference"></attr>
+        <attr name="subTitle" format="reference"></attr>
+    </declare-styleable>
+</resources>

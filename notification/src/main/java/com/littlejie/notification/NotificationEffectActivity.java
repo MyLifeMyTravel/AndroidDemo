@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.view.View;
 public class NotificationEffectActivity extends Activity implements View.OnClickListener {
 
     private NotificationManager mManager;
+    private Bitmap mLargeIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,18 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
         findViewById(R.id.btn_clear_notify).setOnClickListener(this);
 
         mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mLargeIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mLargeIcon != null) {
+            if (!mLargeIcon.isRecycled()) {
+                mLargeIcon.recycle();
+            }
+            mLargeIcon = null;
+        }
     }
 
     @Override
@@ -72,6 +87,7 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
     private void showNotifyOnlyText() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(mLargeIcon)
                 .setContentTitle("我是只有文字效果的通知")
                 .setContentText("我没有铃声、震动、呼吸灯,但我就是一个通知");
         mManager.notify(1, builder.build());
@@ -171,6 +187,7 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
         Notification notify = builder.build();
         notify.flags |= Notification.FLAG_INSISTENT;
         mManager.notify(5, notify);
+        mManager.notify();
     }
 
     /**

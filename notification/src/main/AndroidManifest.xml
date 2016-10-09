@@ -38,7 +38,8 @@
             android:taskAffinity="" />
         <activity android:name=".ProgressNotifyActivity" />
         <activity android:name=".ExpandNotifyActivity" />
-        <activity android:name=".NotificationEffectActivity"></activity>
+        <activity android:name=".NotificationEffectActivity" />
+        <activity android:name=".SimplestNotificationActivity"></activity>
     </application>
 
 </manifest>

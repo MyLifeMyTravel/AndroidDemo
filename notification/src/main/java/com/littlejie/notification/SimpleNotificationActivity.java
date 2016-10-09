@@ -3,22 +3,22 @@ package com.littlejie.notification;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
-import android.widget.Button;
 
+/**
+ * 为了方便,大部分通知都没设置对应的Action,即PendingIntent
+ * 除了sendFlagAutoCancelNotification()方法
+ */
 public class SimpleNotificationActivity extends Activity implements View.OnClickListener {
 
     //Notification.FLAG_FOREGROUND_SERVICE    //表示正在运行的服务
     public static final String NOTIFICATION_TAG = "littlejie";
     public static final int DEFAULT_NOTIFICATION_ID = 1;
-
-    private Button mBtnRemoveAllNotification, mBtnSendNotification, mBtnRemoveNotification;
-    private Button mBtnSendNotificationWithTag, mBtnRemoveNotificationWithTag;
-    private Button mBtnSendTenNotifications;
-    private Button mBtnSendFlagNoClearNotification, mBtnSendFlagAutoClearNotification, mBtnSendFlagOngoingEventNotification;
 
     private NotificationManager mNotificationManager;
 
@@ -27,34 +27,17 @@ public class SimpleNotificationActivity extends Activity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_notification);
 
-        initContentView();
-        initListener();
+        findViewById(R.id.btn_remove_all_notification).setOnClickListener(this);
+        findViewById(R.id.btn_send_notification).setOnClickListener(this);
+        findViewById(R.id.btn_remove_notification).setOnClickListener(this);
+        findViewById(R.id.btn_send_notification_with_tag).setOnClickListener(this);
+        findViewById(R.id.btn_remove_notification_with_tag).setOnClickListener(this);
+        findViewById(R.id.btn_send_ten_notification).setOnClickListener(this);
+        findViewById(R.id.btn_send_flag_no_clear_notification).setOnClickListener(this);
+        findViewById(R.id.btn_send_flag_ongoing_event_notification).setOnClickListener(this);
+        findViewById(R.id.btn_send_flag_auto_cancecl_notification).setOnClickListener(this);
 
         mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-    }
-
-    private void initContentView() {
-        mBtnRemoveAllNotification = (Button) findViewById(R.id.btn_remove_all_notification);
-        mBtnSendNotification = (Button) findViewById(R.id.btn_send_notification);
-        mBtnRemoveNotification = (Button) findViewById(R.id.btn_remove_notification);
-        mBtnSendNotificationWithTag = (Button) findViewById(R.id.btn_send_notification_with_tag);
-        mBtnRemoveNotificationWithTag = (Button) findViewById(R.id.btn_remove_notification_with_tag);
-        mBtnSendTenNotifications = (Button) findViewById(R.id.btn_send_ten_notification);
-        mBtnSendFlagNoClearNotification = (Button) findViewById(R.id.btn_send_flag_no_clear_notification);
-        mBtnSendFlagOngoingEventNotification = (Button) findViewById(R.id.btn_send_flag_ongoing_event_notification);
-        mBtnSendFlagAutoClearNotification = (Button) findViewById(R.id.btn_send_flag_auto_cancecl_notification);
-    }
-
-    private void initListener() {
-        mBtnRemoveAllNotification.setOnClickListener(this);
-        mBtnSendNotification.setOnClickListener(this);
-        mBtnRemoveNotification.setOnClickListener(this);
-        mBtnSendNotificationWithTag.setOnClickListener(this);
-        mBtnRemoveNotificationWithTag.setOnClickListener(this);
-        mBtnSendTenNotifications.setOnClickListener(this);
-        mBtnSendFlagNoClearNotification.setOnClickListener(this);
-        mBtnSendFlagOngoingEventNotification.setOnClickListener(this);
-        mBtnSendFlagAutoClearNotification.setOnClickListener(this);
     }
 
     @Override
@@ -94,10 +77,10 @@ public class SimpleNotificationActivity extends Activity implements View.OnClick
                 sendFlagNoClearNotification();
                 break;
             case R.id.btn_send_flag_auto_cancecl_notification:
-                sendFlagAutoCancelNotification();
+                sendFlagOngoingEventNotification();
                 break;
             case R.id.btn_send_flag_ongoing_event_notification:
-                sendFlagOngoingEventNotification();
+                sendFlagAutoCancelNotification();
                 break;
         }
     }
@@ -110,7 +93,6 @@ public class SimpleNotificationActivity extends Activity implements View.OnClick
         //NotificationCompat 存在于 V4 Support Library
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Send Notification")
                 .setContentText("Hi,My id is 1");
         mNotificationManager.notify(DEFAULT_NOTIFICATION_ID, builder.build());
     }
@@ -163,10 +145,15 @@ public class SimpleNotificationActivity extends Activity implements View.OnClick
      * 该 flag 表示用户单击通知后自动消失
      */
     private void sendFlagAutoCancelNotification() {
+        //设置一个Intent,不然点击通知不会自动消失
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(
+                this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Send Notification Use FLAG_AUTO_CLEAR")
-                .setContentText("Hi,My id is 1,i can be clear.");
+                .setContentText("Hi,My id is 1,i can be clear.")
+                .setContentIntent(resultPendingIntent);
         Notification notification = builder.build();
         //设置 Notification 的 flags = FLAG_NO_CLEAR
         //FLAG_AUTO_CANCEL 表示该通知能被状态栏的清除按钮给清除掉

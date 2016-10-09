@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
 
     private List<ItemInfo> generateItems() {
         List<ItemInfo> items = new ArrayList<>();
+        items.add(new ItemInfo("一个简单的Demo", SimplestNotificationActivity.class));
         items.add(new ItemInfo("Notification 简单 Demo", SimpleNotificationActivity.class));
         items.add(new ItemInfo("Notification 提示形式", NotificationEffectActivity.class));
         items.add(new ItemInfo("TaskStackBuilder 简单测试", TaskStackBuilderActivity.class));
