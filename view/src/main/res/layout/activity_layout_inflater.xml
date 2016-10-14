@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_layout_inflater"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.littlejie.view.LayoutInflaterActivity">
+
+    <Button
+        android:id="@+id/btn_root_is_not_null"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="root!=null" />
+
+    <Button
+        android:id="@+id/btn_root_is_null"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:width="100dp"
+        android:height="100dp"
+        android:text="root=null" />
+
+    <Button
+        android:id="@+id/btn_root_with_false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="root!=null,attachRoot=false" />
+
+    <Button
+        android:id="@+id/btn_root_with_true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="root==null,attachRoot=true" />
+
+    <LinearLayout
+        android:id="@+id/ll_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"></LinearLayout>
+
+</LinearLayout>

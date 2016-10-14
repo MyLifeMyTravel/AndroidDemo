@@ -3,7 +3,7 @@ apply plugin: com.yidao.pack.PostPackPlugin
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion '24.0.3'
 
     //默认配置,所有 productFlavors 都会继承 defaultConfig 中配置的属性
     defaultConfig {
