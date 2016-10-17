@@ -6,11 +6,9 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
 
@@ -94,7 +92,7 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
     }
 
     /**
-     * 展示有铃声效果的通知
+     * 展示有自定义铃声效果的通知
      * 补充:使用系统自带的铃声效果:Uri.withAppendedPath(Audio.Media.INTERNAL_CONTENT_URI, "6");
      */
     private void showNotifyWithRing() {
@@ -114,6 +112,8 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
         //notify.defaults = Notification.DEFAULT_SOUND;
         //调用自己提供的铃声
         //notify.sound = Uri.parse("android.resource://com.littlejie.notification/"+R.raw.sound);
+        //调用系统自带的铃声
+        //notify.sound = Uri.withAppendedPath(MediaStore.Audio.Media.INTERNAL_CONTENT_URI,"2");
         //mManager.notify(2,notify);
         mManager.notify(2, builder.build());
     }
@@ -134,6 +134,13 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
                 //.setDefaults(Notification.DEFAULT_VIBRATE)
                 //自定义震动效果
                 .setVibrate(vibrate);
+        //另一种设置震动的方法
+        //Notification notify = builder.build();
+        //调用系统默认震动
+        //notify.defaults = Notification.DEFAULT_VIBRATE;
+        //调用自己设置的震动
+        //notify.vibrate = vibrate;
+        //mManager.notify(3,notify);
         mManager.notify(3, builder.build());
     }
 
@@ -146,10 +153,14 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
                 .setContentTitle("我是带有呼吸灯效果的通知")
                 .setContentText("一闪一闪亮晶晶~")
                 //ledARGB 表示灯光颜色、 ledOnMS 亮持续时间、ledOffMS 暗的时间
-                .setLights(0xFF0000, 3000, 0);
+                .setLights(0xFF0000, 3000, 3000);
         Notification notify = builder.build();
         //只有在设置了标志符Flags为Notification.FLAG_SHOW_LIGHTS的时候，才支持呼吸灯提醒。
-        notify.flags |= Notification.FLAG_SHOW_LIGHTS;
+        notify.flags = Notification.FLAG_SHOW_LIGHTS;
+        //设置lights参数的另一种方式
+        //notify.ledARGB = 0xFF0000;
+        //notify.ledOnMS = 500;
+        //notify.ledOffMS = 5000;
         //使用handler延迟发送通知,因为连接usb时,呼吸灯一直会亮着
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -161,7 +172,7 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
     }
 
     /**
-     * 显示带有铃声、震动、呼吸灯效果的通知
+     * 显示带有默认铃声、震动、呼吸灯效果的通知
      * 如需实现自定义效果,请参考前面三个例子
      */
     private void showNotifyWithMixed() {
@@ -186,8 +197,7 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
                 .setDefaults(Notification.DEFAULT_ALL);
         Notification notify = builder.build();
         notify.flags |= Notification.FLAG_INSISTENT;
-        mManager.notify(5, notify);
-        mManager.notify();
+        mManager.notify(6, notify);
     }
 
     /**
@@ -201,9 +211,12 @@ public class NotificationEffectActivity extends Activity implements View.OnClick
                 .setDefaults(Notification.DEFAULT_ALL);
         Notification notify = builder.build();
         notify.flags |= Notification.FLAG_ONLY_ALERT_ONCE;
-        mManager.notify(5, notify);
+        mManager.notify(7, notify);
     }
 
+    /**
+     * 清除所有通知
+     */
     private void clearNotify() {
         mManager.cancelAll();
     }

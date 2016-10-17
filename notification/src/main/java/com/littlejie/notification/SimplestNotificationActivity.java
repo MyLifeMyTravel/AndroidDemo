@@ -2,7 +2,9 @@ package com.littlejie.notification;
 
 import android.app.Activity;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ public class SimplestNotificationActivity extends Activity implements View.OnCli
 
         findViewById(R.id.btn_send_simplest_notification).setOnClickListener(this);
         findViewById(R.id.btn_send_simplest_notification_with_large_icon).setOnClickListener(this);
+        findViewById(R.id.btn_send_simplest_notification_with_action).setOnClickListener(this);
 
         mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mLargeIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_fab_repair);
@@ -50,6 +53,9 @@ public class SimplestNotificationActivity extends Activity implements View.OnCli
             case R.id.btn_send_simplest_notification_with_large_icon:
                 sendSimplestNotificationWithLargeIcon();
                 break;
+            case R.id.btn_send_simplest_notification_with_action:
+                sendSimplestNotificationWithAction();
+                break;
         }
     }
 
@@ -64,6 +70,8 @@ public class SimplestNotificationActivity extends Activity implements View.OnCli
                 .setContentTitle("最简单的Notification")
                 //设置通知内容
                 .setContentText("只有小图标、标题、内容");
+                //设置通知时间，默认为系统发出通知的时间，通常不用设置
+                //.setWhen(System.currentTimeMillis());
         //通过builder.build()方法生成Notification对象,并发送通知,id=1
         notifyManager.notify(1, builder.build());
     }
@@ -73,7 +81,7 @@ public class SimplestNotificationActivity extends Activity implements View.OnCli
      */
     private void sendSimplestNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.icon_fab_repair)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("最简单的Notification")
                 .setContentText("只有小图标、标题、内容");
         mNotifyManager.notify(1, builder.build());
@@ -86,10 +94,30 @@ public class SimplestNotificationActivity extends Activity implements View.OnCli
      */
     private void sendSimplestNotificationWithLargeIcon() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.icon_fab_repair)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("带大图标的Notification")
                 .setContentText("有小图标、大图标、标题、内容")
                 .setLargeIcon(mLargeIcon);
         mNotifyManager.notify(2, builder.build());
     }
+
+    /**
+     * 发送一个点击跳转到MainActivity的消息
+     */
+    private void sendSimplestNotificationWithAction() {
+        //获取PendingIntent
+        Intent mainIntent = new Intent(this, MainActivity.class);
+        PendingIntent mainPendingIntent = PendingIntent.getActivity(this, 0, mainIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //创建 Notification.Builder 对象
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                //点击通知后自动清除
+                .setAutoCancel(true)
+                .setContentTitle("我是带Action的Notification")
+                .setContentText("点我会打开MainActivity")
+                .setContentIntent(mainPendingIntent);
+        //发送通知
+        mNotifyManager.notify(3, builder.build());
+    }
+
 }

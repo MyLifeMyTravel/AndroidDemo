@@ -77,10 +77,10 @@ public class SimpleNotificationActivity extends Activity implements View.OnClick
                 sendFlagNoClearNotification();
                 break;
             case R.id.btn_send_flag_auto_cancecl_notification:
-                sendFlagOngoingEventNotification();
+                sendFlagAutoCancelNotification();
                 break;
             case R.id.btn_send_flag_ongoing_event_notification:
-                sendFlagAutoCancelNotification();
+                sendFlagOngoingEventNotification();
                 break;
         }
     }
@@ -141,7 +141,7 @@ public class SimpleNotificationActivity extends Activity implements View.OnClick
     }
 
     /**
-     * 设置FLAG_NO_CLEAR
+     * 设置FLAG_AUTO_CANCEL
      * 该 flag 表示用户单击通知后自动消失
      */
     private void sendFlagAutoCancelNotification() {
@@ -157,12 +157,13 @@ public class SimpleNotificationActivity extends Activity implements View.OnClick
         Notification notification = builder.build();
         //设置 Notification 的 flags = FLAG_NO_CLEAR
         //FLAG_AUTO_CANCEL 表示该通知能被状态栏的清除按钮给清除掉
+        //等价于 builder.setAutoCancel(true);
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
         mNotificationManager.notify(DEFAULT_NOTIFICATION_ID, notification);
     }
 
     /**
-     * 设置FLAG_NO_CLEAR
+     * 设置FLAG_ONGOING_EVENT
      * 该 flag 表示发起正在运行事件（活动中）
      */
     private void sendFlagOngoingEventNotification() {
@@ -173,6 +174,7 @@ public class SimpleNotificationActivity extends Activity implements View.OnClick
         Notification notification = builder.build();
         //设置 Notification 的 flags = FLAG_NO_CLEAR
         //FLAG_ONGOING_EVENT 表示该通知通知放置在正在运行,不能被手动清除,但能通过 cancel() 方法清除
+        //等价于 builder.setOngoing(true);
         notification.flags |= Notification.FLAG_ONGOING_EVENT;
         mNotificationManager.notify(DEFAULT_NOTIFICATION_ID, notification);
     }
