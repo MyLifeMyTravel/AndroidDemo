@@ -15,9 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EmptyListViewActivity"></activity>
-        <activity android:name=".ComplexEmptyListViewActivity"></activity>
-        <activity android:name=".ItemPositionActivity"></activity>
+        <activity android:name=".EmptyListViewActivity" />
+        <activity android:name=".ComplexEmptyListViewActivity" />
+        <activity android:name=".ItemPositionActivity" />
+        <activity android:name=".ItemSelectStateActivity"></activity>
     </application>
 
 </manifest>

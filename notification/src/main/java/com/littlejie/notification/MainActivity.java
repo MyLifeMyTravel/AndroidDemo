@@ -1,10 +1,7 @@
 package com.littlejie.notification;
 
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,6 +39,7 @@ public class MainActivity extends Activity {
         items.add(new ItemInfo("一个简单的Demo", SimplestNotificationActivity.class));
         items.add(new ItemInfo("Notification 简单 Demo", SimpleNotificationActivity.class));
         items.add(new ItemInfo("Notification 提示形式", NotificationEffectActivity.class));
+        items.add(new ItemInfo("Notification 样式", NotificationStyleActivity.class));
         items.add(new ItemInfo("TaskStackBuilder 简单测试", TaskStackBuilderActivity.class));
         return items;
     }

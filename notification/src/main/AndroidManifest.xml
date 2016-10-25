@@ -39,7 +39,8 @@
         <activity android:name=".ProgressNotifyActivity" />
         <activity android:name=".ExpandNotifyActivity" />
         <activity android:name=".NotificationEffectActivity" />
-        <activity android:name=".SimplestNotificationActivity"></activity>
+        <activity android:name=".SimplestNotificationActivity" />
+        <activity android:name=".NotificationStyleActivity"></activity>
     </application>
 
 </manifest>

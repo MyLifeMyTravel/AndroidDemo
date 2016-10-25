@@ -1,41 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_layout_inflater"
+    android:id="@+id/activity_notification_style"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.littlejie.view.LayoutInflaterActivity">
+    tools:context="com.littlejie.notification.NotificationStyleActivity">
 
     <Button
-        android:id="@+id/btn_root_is_not_null"
+        android:id="@+id/btn_big_text_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="root!=null" />
+        android:text="发送一个BigTextStyle的通知" />
 
     <Button
-        android:id="@+id/btn_root_is_null"
+        android:id="@+id/btn_inbox_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="root=null" />
+        android:text="发送一个InboxStyle的通知" />
 
     <Button
-        android:id="@+id/btn_root_with_false"
+        android:id="@+id/btn_big_picture_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="root!=null,attachRoot=false" />
+        android:text="发送一个BigPictureStyle的通知" />
 
     <Button
-        android:id="@+id/btn_root_with_true"
+        android:id="@+id/btn_media_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="root==null,attachRoot=true" />
+        android:text="发送一个MediaStyle的通知" />
 
-    <!-- 容器，用于直观的在Activity上动态演示添加操作-->
-    <LinearLayout
-        android:id="@+id/ll_container"
+    <Button
+        android:id="@+id/btn_messaging_style"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"></LinearLayout>
-
+        android:layout_height="wrap_content"
+        android:text="发送一个MessagingStyle的通知" />
 </LinearLayout>

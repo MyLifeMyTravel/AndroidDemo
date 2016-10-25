@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
         List<ItemInfo> infos = new ArrayList<>();
         infos.add(new ItemInfo("简单的emptyView", EmptyListViewActivity.class));
         infos.add(new ItemInfo("复杂的emptyView", ComplexEmptyListViewActivity.class));
+        infos.add(new ItemInfo("关于ListView Item中ImageView选中状态的疑问", ItemSelectStateActivity.class));
         return infos;
     }
 
