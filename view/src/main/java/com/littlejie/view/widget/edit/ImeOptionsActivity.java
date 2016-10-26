@@ -56,7 +56,7 @@ public class ImeOptionsActivity extends Activity implements TextView.OnEditorAct
         Log.d(TAG, "actionId=" + actionId + ",Corresponds to:" + getCorrespondsImeAction(actionId));
         Log.d(TAG, "keyEvent=" + event);
         //返回true表示已消费该事件
-        return true;
+        return false;
     }
 
     /**
