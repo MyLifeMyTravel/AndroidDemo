@@ -1,4 +1,4 @@
-package com.littlejie.view;
+package com.littlejie.view.widget;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,13 +9,16 @@ import android.widget.ListView;
 
 import com.littlejie.demoutil.ItemInfo;
 import com.littlejie.demoutil.Util;
-import com.littlejie.view.widget.EditTextDemoActivity;
-import com.littlejie.view.widget.TextViewDemoActivity;
+import com.littlejie.view.R;
+import com.littlejie.view.widget.edit.ImeOptionsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+/**
+ * EditText 相关属性使用Demo
+ */
+public class EditTextDemoActivity extends Activity {
 
     private ListView mLv;
     private List<ItemInfo> mItems;
@@ -31,16 +34,14 @@ public class MainActivity extends Activity {
         mLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Util.startActivity(MainActivity.this, mItems.get(position).getClz());
+                Util.startActivity(EditTextDemoActivity.this, mItems.get(position).getClz());
             }
         });
     }
 
     private List<ItemInfo> generateItems() {
         List<ItemInfo> items = new ArrayList<>();
-        items.add(new ItemInfo("TextView Demo", TextViewDemoActivity.class));
-        items.add(new ItemInfo("EditText Demo", EditTextDemoActivity.class));
+        items.add(new ItemInfo("EditText ImeOptions Demo", ImeOptionsActivity.class));
         return items;
     }
-
 }

@@ -9,15 +9,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-
-        </activity>
-        <activity android:name=".LayoutInflaterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".LayoutInflaterActivity"></activity>
+        <activity android:name=".widget.TextViewDemoActivity" />
+        <activity android:name=".widget.EditTextDemoActivity" />
+        <activity android:name=".widget.edit.ImeOptionsActivity"></activity>
     </application>
 
 </manifest>

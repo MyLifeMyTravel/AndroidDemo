@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_ime_options"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.littlejie.view.widget.edit.ImeOptionsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/actionNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="imeOptions:normal"
+            android:imeOptions="normal"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/actionUnspecified_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="imeOptions:actionUnspecified"
+            android:imeOptions="actionUnspecified"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/actionNone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="imeOptions:actionNone"
+            android:imeOptions="actionNone"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/actionGo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="imeOptions:actionGo"
+            android:imeOptions="actionGo"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/actionSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="imeOptions:actionSearch"
+            android:imeOptions="actionSearch"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/actionSend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="imeOptions:actionSend"
+            android:imeOptions="actionSend"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/actionNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="imeOptions:actionNext"
+            android:imeOptions="actionNext"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/actionDone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="imeOptions:actionDone"
+            android:imeOptions="actionDone"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/actionPrevious"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="imeOptions:actionPrevious"
+            android:imeOptions="actionPrevious"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/actionUnspecified_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="imeOptions:actionUnspecified"
+            android:imeOptions="actionUnspecified"
+            android:inputType="phone" />
+
+        <!-- imeOptions=normal放最后和放中间的效果和actionUnspecified的效果一样 -->
+        <!--<EditText-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="imeOptions:normal"-->
+        <!--android:imeOptions="normal"-->
+        <!--android:inputType="number" />-->
+
+    </LinearLayout>
+
+</ScrollView>
