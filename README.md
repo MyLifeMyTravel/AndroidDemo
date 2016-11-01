@@ -48,3 +48,5 @@ Android view 的使用，包括常见的控件使用
 ## window
 测试 Android Window 类的使用特性
 
+## app shortcuts
+Android 7.1 新增功能 App Shortcuts，类似于 iPhone 上的 3D Touch

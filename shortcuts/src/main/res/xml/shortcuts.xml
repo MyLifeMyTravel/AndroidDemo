@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutDisabledMessage="@string/compose_disabled_message1"
+        android:shortcutId="compose1"
+        android:shortcutLongLabel="@string/compose_shortcut_long_label1"
+        android:shortcutShortLabel="@string/compose_shortcut_short_label1">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.littlejie.shortcuts.MainActivity"
+            android:targetPackage="com.littlejie.shortcuts" />
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.littlejie.shortcuts.TestActivity"
+            android:targetPackage="com.littlejie.shortcuts" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <!-- Specify more shortcuts here. -->
+</shortcuts>

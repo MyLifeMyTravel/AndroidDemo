@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.littlejie.shortcuts.MainActivity">
+
+    <Button
+        android:id="@+id/btn_set"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="设置快捷方式" />
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="添加快捷方式" />
+
+    <Button
+        android:id="@+id/btn_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="更新快捷方式" />
+
+    <Button
+        android:id="@+id/btn_disabled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="禁用快捷方式" />
+
+    <Button
+        android:id="@+id/btn_remove"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="移除快捷方式" />
+
+    <Button
+        android:id="@+id/btn_removeAll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="移除所有快捷方式" />
+
+    <Button
+        android:id="@+id/btn_print_max_shortcut_per_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="每个Launcher Activity能显示的最多快捷方式个数" />
+
+    <Button
+        android:id="@+id/btn_print_dynamic_shortcut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="动态快捷方式列表信息" />
+
+    <Button
+        android:id="@+id/btn_print_static_shortcut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="静态快捷方式列表信息" />
+</LinearLayout>
