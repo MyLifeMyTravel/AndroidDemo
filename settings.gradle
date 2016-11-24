@@ -1,2 +1,2 @@
 //include ':app', ':littlejie', ':scanner', ':androidui', ':popupfabmenu', ':listview', ':adapter', ':demoutil', ':multichannel'
-include 'littlejie', ':scanner', ':view', ':anim', ':demoutil', ':service', ':activity', ':shortcuts', ':drawerlayout'
+include 'littlejie', ':scanner', ':view', ':anim', ':demoutil', ':service', ':activity', ':shortcuts', ':drawerlayout', ':notification'

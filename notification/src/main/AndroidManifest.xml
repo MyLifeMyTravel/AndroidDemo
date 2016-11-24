@@ -3,6 +3,7 @@
     package="com.littlejie.notification">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -37,10 +38,18 @@
             android:launchMode="singleTask"
             android:taskAffinity="" />
         <activity android:name=".ProgressNotifyActivity" />
-        <activity android:name=".ExpandNotifyActivity" />
         <activity android:name=".NotificationEffectActivity" />
         <activity android:name=".SimplestNotificationActivity" />
-        <activity android:name=".NotificationStyleActivity"></activity>
+        <activity android:name=".NotificationStyleActivity" />
+        <activity android:name=".GetNotificationBarActivity"></activity>
+
+        <service
+            android:name=".MyNotificationListenerService"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
