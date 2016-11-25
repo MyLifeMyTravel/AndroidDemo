@@ -1,3 +1,1 @@
-include ':test'
-//include ':app', ':littlejie', ':scanner', ':androidui', ':popupfabmenu', ':listview', ':adapter', ':demoutil', ':multichannel'
-include 'littlejie', ':scanner', ':view', ':anim', ':demoutil', ':service', ':activity', ':shortcuts', ':drawerlayout'
+include ':test', ':customview', 'littlejie', ':scanner', ':view', ':anim', ':demoutil', ':service', ':activity', ':shortcuts', ':drawerlayout'
