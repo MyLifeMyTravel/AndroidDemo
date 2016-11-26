@@ -6,7 +6,9 @@ android {
 
     defaultConfig {
         applicationId "com.littlejie.notification"
-        minSdkVersion 15
+        //如果使用NotificationListenerService,则最低版本为18
+        //调用getActiveNotifications() 也一样
+        minSdkVersion 18
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
