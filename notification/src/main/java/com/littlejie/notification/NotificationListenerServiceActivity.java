@@ -43,6 +43,10 @@ public class NotificationListenerServiceActivity extends Activity {
         mBtnSetNotifyAccess.setText(String.format(getString(R.string.set_notification_access), isEnabled() ? "已开启" : "未开启"));
     }
 
+    /**
+     * 判断 Notification access 是否开启
+     * @return
+     */
     private boolean isEnabled() {
         String pkgName = getPackageName();
         final String flat = Settings.Secure.getString(getContentResolver(),
