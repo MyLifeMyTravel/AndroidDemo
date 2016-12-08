@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.littlejie.notification.GetNotificationBarActivity">
+    tools:context=".NotificationListenerServiceActivity">
 
     <Button
         android:id="@+id/btn_setting"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="设置NotificationListenerService" />
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btn_start"

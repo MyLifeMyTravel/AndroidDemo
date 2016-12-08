@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
         items.add(new ItemInfo("Notification 提示形式", NotificationEffectActivity.class));
         items.add(new ItemInfo("Notification 样式", NotificationStyleActivity.class));
         items.add(new ItemInfo("TaskStackBuilder 简单测试", TaskStackBuilderActivity.class));
-        items.add(new ItemInfo("启动 NotificationListenerService", GetNotificationBarActivity.class));
+        items.add(new ItemInfo("启动 NotificationListenerService", NotificationListenerServiceActivity.class));
         return items;
     }
 
