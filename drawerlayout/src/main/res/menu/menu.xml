@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/search_button"
+        android:icon="@mipmap/ic_contacts_black_24dp"
+        android:orderInCategory="100"
+        android:title="搜索"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/scan_button"
+        android:icon="@mipmap/ic_settings_black_24dp"
+        android:orderInCategory="100"
+        android:title="扫描"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/setting_button"
+        android:icon="@mipmap/ic_wifi_black_24dp"
+        android:orderInCategory="100"
+        android:title="设置"
+        app:showAsAction="ifRoom" />
+</menu>

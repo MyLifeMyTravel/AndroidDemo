@@ -1,1 +1,1 @@
-include ':test', ':customview', 'littlejie', ':scanner', ':view', ':anim', ':demoutil', ':service', ':activity', ':shortcuts', ':drawerlayout', ':notification'
+include ':adapter', ':test', ':customview', ':sqlite', 'littlejie', ':scanner', ':view', ':anim', ':demoutil', ':service', ':activity', ':shortcuts', ':drawerlayout', ':notification'
