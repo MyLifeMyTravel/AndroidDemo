@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +20,8 @@ import java.util.List;
 public class ClipboardUtil {
 
     public static final String TAG = ClipboardUtil.class.getSimpleName();
+
+    private static final String MIME_CONTACT = "vnd.android.cursor.dir/person";
     /**
      * 由于系统剪贴板在某些情况下会多次调用，但调用间隔基本不会超过5ms
      * 考虑到用户操作，将阈值设为100ms，过滤掉前几次无效回调
@@ -67,19 +68,38 @@ public class ClipboardUtil {
     }
 
     private void onPrimaryClipChangedListener(ClipboardManager clipboardManager) {
-        Log.d(TAG, clipboardManager.getPrimaryClip().toString());
-        //此处以拷贝 Intent 为例进行处理
-        ClipData data = clipboardManager.getPrimaryClip();
-        String mimeType = getPrimaryClipMimeType();
-        //一般来说，收到系统 onPrimaryClipChanged() 回调时，剪贴板一定不为空
-        //但为了保险起见，在这边还是做了空指针判断
-        if (data == null) {
-            return;
-        }
-        if (ClipDescription.MIMETYPE_TEXT_INTENT.equals(mimeType)) {
-            //ClipData.Item可以有多个，这里假设只有一个
-            mContext.startActivity(data.getItemAt(0).getIntent());
-        }
+//        Log.d(TAG, clipboardManager.getPrimaryClip().toString());
+//        //此处以拷贝 Intent 为例进行处理
+//        ClipData data = clipboardManager.getPrimaryClip();
+//        String mimeType = getPrimaryClipMimeType();
+//        Log.d(TAG, "mimeType = " + mimeType);
+//        //一般来说，收到系统 onPrimaryClipChanged() 回调时，剪贴板一定不为空
+//        //但为了保险起见，在这边还是做了空指针判断
+//        if (data == null) {
+//            return;
+//        }
+//        //前四种为剪贴板默认的MimeType，但是当拷贝数据为Uri时，会出现其它MimeType，需要特殊处理
+//        if (ClipDescription.MIMETYPE_TEXT_INTENT.equals(mimeType)) {
+//            //一个 ClipData 可以有多个 ClipData.Item，这里假设只有一个
+//            //startActivity(data.getItemAt(0).getIntent());
+//        } else if (ClipDescription.MIMETYPE_TEXT_HTML.equals(mimeType)) {
+//
+//        } else if (ClipDescription.MIMETYPE_TEXT_PLAIN.equals(mimeType)) {
+//
+//        } else if (ClipDescription.MIMETYPE_TEXT_URILIST.equals(mimeType)) {
+//            //当uri=content://media/external时，copyUri会进入此if-else语句
+//        } else if (MIME_CONTACT.equals(mimeType)) {
+//            //当uri=content://contacts/people时，copyUri会进入此if-else语句
+//            StringBuilder sb = new StringBuilder();
+//            int index = 1;
+//            Uri uri = data.getItemAt(0).getUri();
+//            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+//            while (cursor.moveToNext()) {
+//                //打印所有联系人姓名
+//                String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+//                sb.append("联系人 " + index++ + " : " + name + "\n");
+//            }
+//        }
     }
 
     private ClipboardUtil(Context context) {
@@ -136,6 +156,9 @@ public class ClipboardUtil {
      * @return
      */
     public String getClipText() {
+        if (!hasPrimaryClip()) {
+            return null;
+        }
         ClipData data = mClipboardManager.getPrimaryClip();
         if (data != null
                 && mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
@@ -162,6 +185,9 @@ public class ClipboardUtil {
      * @return
      */
     public String getClipText(Context context, int index) {
+        if (!hasPrimaryClip()) {
+            return null;
+        }
         ClipData data = mClipboardManager.getPrimaryClip();
         if (data == null) {
             return null;
@@ -244,12 +270,36 @@ public class ClipboardUtil {
         mClipboardManager.setPrimaryClip(clip);
     }
 
+    public CharSequence coercePrimaryClipToText() {
+        if (!hasPrimaryClip()) {
+            return null;
+        }
+        return mClipboardManager.getPrimaryClip().getItemAt(0).coerceToText(mContext);
+    }
+
+    public CharSequence coercePrimaryClipToStyledText() {
+        if (!hasPrimaryClip()) {
+            return null;
+        }
+        return mClipboardManager.getPrimaryClip().getItemAt(0).coerceToStyledText(mContext);
+    }
+
+    public CharSequence coercePrimaryClipToHtmlText() {
+        if (!hasPrimaryClip()) {
+            return null;
+        }
+        return mClipboardManager.getPrimaryClip().getItemAt(0).coerceToHtmlText(mContext);
+    }
+
     /**
      * 获取当前剪贴板内容的MimeType
      *
      * @return 当前剪贴板内容的MimeType
      */
     public String getPrimaryClipMimeType() {
+        if (!hasPrimaryClip()) {
+            return null;
+        }
         return mClipboardManager.getPrimaryClipDescription().getMimeType(0);
     }
 

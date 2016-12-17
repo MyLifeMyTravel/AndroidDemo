@@ -74,6 +74,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
         } else if (ClipDescription.MIMETYPE_TEXT_URILIST.equals(mimeType)) {
             //当uri=content://media/external时，copyUri会进入此if-else语句
         } else if (MIME_CONTACT.equals(mimeType)) {
+            Log.d(TAG, mClipboard.coercePrimaryClipToText().toString());
             //当uri=content://contacts/people时，copyUri会进入此if-else语句
             StringBuilder sb = new StringBuilder(mTvCopied.getText() + "\n\n");
             int index = 1;
@@ -133,7 +134,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
         //ClipData 目前仅能设置单个 MimeType
         List<ClipData.Item> items = new ArrayList<>();
         //故 ClipData.Item 的类型必须和 MimeType 设置的相符
-        //当然也可以不相符，那么只能在调用 item.getHtmlText() 方法时判断是否为空来进行选择
+        //比如都是文字，都是URI或都是Intent，而不是混合各种形式。
         ClipData.Item item1 = new ClipData.Item("text1");
         ClipData.Item item2 = new ClipData.Item("text2");
         ClipData.Item item3 = new ClipData.Item("text3");
