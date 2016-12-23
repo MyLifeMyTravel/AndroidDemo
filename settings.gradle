@@ -1,2 +1,2 @@
-include ':zhihudemo', ':sqlite', ':clipboard'
+include ':clipboard', ':translucentbar', ':mediascan'
 include 'littlejie', ':scanner', ':demoutil', ':drawerlayout', ':notification'
