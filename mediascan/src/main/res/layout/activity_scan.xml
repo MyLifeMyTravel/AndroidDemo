@@ -4,14 +4,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_filter"
+    <EditText
+        android:id="@+id/edt_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="过滤 文本文件 和 JPG 文件" />
+        android:hint="请输入过滤条件(以,分隔)" />
+
+    <Button
+        android:id="@+id/btn_filter_by_suffix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="按后缀过滤,如：txt,jpg"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_filter_by_mimetype"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="按文件的MimeType过滤,如：text/plain,image/jpeg"
+        android:textAllCaps="false" />
 
     <ListView
         android:id="@+id/lv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 </LinearLayout>

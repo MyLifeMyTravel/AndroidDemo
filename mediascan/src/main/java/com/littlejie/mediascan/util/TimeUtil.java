@@ -1,4 +1,4 @@
-package com.littlejie.mediascan;
+package com.littlejie.mediascan.util;
 
 import java.text.SimpleDateFormat;
 

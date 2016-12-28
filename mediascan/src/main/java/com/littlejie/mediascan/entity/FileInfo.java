@@ -1,6 +1,6 @@
 package com.littlejie.mediascan.entity;
 
-import com.littlejie.mediascan.TimeUtil;
+import com.littlejie.mediascan.util.TimeUtil;
 
 /**
  * Created by littlejie on 2016/12/28.

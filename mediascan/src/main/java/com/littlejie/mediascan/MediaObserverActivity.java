@@ -32,7 +32,13 @@ public class MediaObserverActivity extends AppCompatActivity implements View.OnC
 
     private static final String TAG = MediaObserverActivity.class.getSimpleName();
     private static final String ROOT = Environment.getExternalStorageDirectory().getAbsolutePath();
-    private static final String TMP_FILE = ROOT + "/tmp1.txt";
+    private static final String FILE_TMP = ROOT + "/tmp1.txt";
+    //如果一个目录下有 .nomedia 目录，那么这个目录下的文件将被MediaScanner忽略(不包括该目录)
+    //当然把 .nomedia 目录放在系统存储的根目录下是不行的
+    private static final String DIR_IGNORED = ROOT + "/Ignored By MediaScanner";
+    private static final String DIR_NO_MEDIA = DIR_IGNORED + "/.nomedia";
+    private static final String FILE_IGNORED1 = DIR_IGNORED + "/ignore1.txt";
+    private static final String FILE_IGNORED2 = DIR_IGNORED + "/ignore2.txt";
     //获取外部存储上图片的Uri，相当于 content://media/external/images/media
     //MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
     //获取外部存储上音频的Uri，相当于 content://media/external/audio/media
@@ -58,6 +64,7 @@ public class MediaObserverActivity extends AppCompatActivity implements View.OnC
 
         findViewById(R.id.btn_create_file).setOnClickListener(this);
         findViewById(R.id.btn_delete_file).setOnClickListener(this);
+        findViewById(R.id.btn_ignore_scan).setOnClickListener(this);
         getContentResolver().registerContentObserver(CONTENT_URI, false, mMediaStoreObserver);
     }
 
@@ -73,9 +80,9 @@ public class MediaObserverActivity extends AppCompatActivity implements View.OnC
             case R.id.btn_create_file:
                 try {
                     //记得添加文件读写权限，此处使用 Apache commons-io 库来实现文件读写
-                    FileUtils.write(new File(TMP_FILE), "test", Charset.forName("UTF-8"));
+                    FileUtils.write(new File(FILE_TMP), "test", Charset.forName("UTF-8"));
                     Toast.makeText(this, "创建文件成功", Toast.LENGTH_SHORT).show();
-                    sendScanFileBroadcast(TMP_FILE);
+                    sendScanFileBroadcast(FILE_TMP);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(this, "创建文件失败", Toast.LENGTH_SHORT).show();
@@ -83,12 +90,25 @@ public class MediaObserverActivity extends AppCompatActivity implements View.OnC
                 break;
             case R.id.btn_delete_file:
                 try {
-                    FileUtils.forceDelete(new File(TMP_FILE));
+                    FileUtils.forceDelete(new File(FILE_TMP));
                     Toast.makeText(this, "删除文件成功", Toast.LENGTH_SHORT).show();
-                    sendScanFileBroadcast(TMP_FILE);
+                    sendScanFileBroadcast(FILE_TMP);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(this, "删除文件失败", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.btn_ignore_scan:
+                try {
+                    FileUtils.forceMkdir(new File(DIR_IGNORED));
+                    FileUtils.forceMkdir(new File(DIR_NO_MEDIA));
+                    FileUtils.write(new File(FILE_IGNORED1), "ignore", Charset.forName("UTF-8"));
+                    FileUtils.write(new File(FILE_IGNORED2), "ignore", Charset.forName("UTF-8"));
+                    Toast.makeText(this, "创建文件夹成功，但是系统不会扫描该目录", Toast.LENGTH_SHORT);
+                    sendScanFileBroadcast(DIR_IGNORED);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "创建文件夹失败", Toast.LENGTH_SHORT);
                 }
                 break;
         }
