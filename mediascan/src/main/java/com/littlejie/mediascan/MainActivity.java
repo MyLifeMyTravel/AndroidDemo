@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
     private List<ItemInfo> generateItems() {
         List<ItemInfo> items = new ArrayList<>();
-        items.add(new ItemInfo("创建txt文件监听多媒体数据库变化", ScanFileActivity.class));
+        items.add(new ItemInfo("扫描文本文件和 JPG 文件", ScanFileActivity.class));
+        items.add(new ItemInfo("创建txt文件监听多媒体数据库变化", MediaObserverActivity.class));
         return items;
     }
 }
