@@ -2,16 +2,28 @@ package com.littlejie.mediascan.entity;
 
 import com.littlejie.mediascan.util.TimeUtil;
 
+import java.io.File;
+
 /**
  * Created by littlejie on 2016/12/28.
  */
 
 public class FileInfo {
 
+    private long id;
     private String path;
     private String name;
     private long modify;
     private int parent;
+    private File file;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getPath() {
         return path;
@@ -45,11 +57,22 @@ public class FileInfo {
         this.parent = parent;
     }
 
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
     @Override
     public String toString() {
+        if (file == null) {
+            file = new File(path);
+        }
         return "名称：" + name
                 + "\n路径：" + path
                 + "\n修改时间：" + TimeUtil.parse2TimeDetail(modify * 1000)
-                + "\n是否为目录：" + (parent == 0 ? "是" : "否");
+                + "\n是否为目录：" + (file != null && file.isDirectory() ? "是" : "否");
     }
 }

@@ -62,6 +62,7 @@ public class MediaObserverActivity extends AppCompatActivity implements View.OnC
         mAdapter = new SimpleAdapter(this);
         mLv.setAdapter(mAdapter);
 
+        findViewById(R.id.btn_scan_root).setOnClickListener(this);
         findViewById(R.id.btn_create_file).setOnClickListener(this);
         findViewById(R.id.btn_delete_file).setOnClickListener(this);
         findViewById(R.id.btn_ignore_scan).setOnClickListener(this);
@@ -77,6 +78,9 @@ public class MediaObserverActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.btn_scan_root:
+                sendScanFileBroadcast(ROOT);
+                break;
             case R.id.btn_create_file:
                 try {
                     //记得添加文件读写权限，此处使用 Apache commons-io 库来实现文件读写
@@ -115,7 +119,7 @@ public class MediaObserverActivity extends AppCompatActivity implements View.OnC
     }
 
     /**
-     * 发送扫描文件的广播
+     * 发送扫描文件的广播，file 路径为根目录时无效
      *
      * @param file
      */

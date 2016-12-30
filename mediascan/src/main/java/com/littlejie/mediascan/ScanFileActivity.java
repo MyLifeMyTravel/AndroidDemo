@@ -7,6 +7,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import android.widget.ListView;
 import com.littlejie.mediascan.adapter.SimpleAdapter;
 import com.littlejie.mediascan.entity.FileInfo;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,8 @@ public class ScanFileActivity extends AppCompatActivity implements View.OnClickL
     private ListView mLv;
     private SimpleAdapter mAdapter;
 
+    private boolean isNewFile;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +52,8 @@ public class ScanFileActivity extends AppCompatActivity implements View.OnClickL
 
         mBtnFilterSuffix.setOnClickListener(this);
         mBtnFilterMimeType.setOnClickListener(this);
+        findViewById(R.id.btn_new_file).setOnClickListener(this);
+        findViewById(R.id.btn_not_new_file).setOnClickListener(this);
     }
 
 
@@ -59,6 +65,14 @@ public class ScanFileActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btn_filter_by_mimetype:
                 startFilter(MediaStore.Files.FileColumns.MIME_TYPE);
+                break;
+            case R.id.btn_new_file:
+                isNewFile = true;
+                startFilter("");
+                break;
+            case R.id.btn_not_new_file:
+                isNewFile = false;
+                startFilter("");
                 break;
         }
     }
@@ -81,15 +95,21 @@ public class ScanFileActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
         List<FileInfo> lstFile = new ArrayList<>();
+        long start = System.currentTimeMillis();
         while (cursor.moveToNext()) {
             FileInfo file = new FileInfo();
             //此处 cursor.getString(index) 写法不正规，但却不失简便
             file.setName(cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.TITLE)));
-            file.setPath(cursor.getString(1));
+            String path = cursor.getString(1);
+            file.setPath(path);
             file.setModify(cursor.getLong(2));
             file.setParent(cursor.getInt(3));
+            if (isNewFile) {
+                file.setFile(new File(path));
+            }
             lstFile.add(file);
         }
+        Log.d("ScanFile", "spend time = " + (System.currentTimeMillis() - start));
         mAdapter.setData(lstFile);
     }
 
