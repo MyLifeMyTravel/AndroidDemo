@@ -1,2 +1,3 @@
-include ':clipboard', ':translucentbar', ':mediascan'
-include 'littlejie', ':scanner', ':demoutil', ':drawerlayout', ':notification'
+include 'littlejie'
+//include ':adapter', ':drawerlayout', ':listview', ':notification', ':view'
+include ':mediascan', ':fragment'
