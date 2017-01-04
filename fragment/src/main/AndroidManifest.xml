@@ -18,7 +18,9 @@
         <activity android:name=".subclass.SubClassListActivity" />
         <activity android:name=".lifecircle.LifeCircleWithViewPagerActivity" />
         <activity android:name=".lifecircle.LifeCircleListActivity" />
-        <activity android:name=".lifecircle.LifeCircleActivity"></activity>
+        <activity android:name=".lifecircle.SimpleLifeCircleActivity" />
+        <activity android:name=".lifecircle.LifeCircleWithBackStackActivity" />
+        <activity android:name=".lifecircle.LifeCircleWithHideShowActivity"></activity>
     </application>
 
 </manifest>

@@ -4,10 +4,16 @@
     android:id="@+id/activity_life_circle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.littlejie.fragment.lifecircle.LifeCircleActivity">
+    tools:context="com.littlejie.fragment.lifecircle.SimpleLifeCircleActivity">
+
+    <TextView
+        android:id="@+id/tv_activity_created"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <fragment
         android:name="com.littlejie.fragment.LifeCircleFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </RelativeLayout>

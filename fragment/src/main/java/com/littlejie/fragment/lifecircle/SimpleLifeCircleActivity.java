@@ -2,11 +2,15 @@ package com.littlejie.fragment.lifecircle;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.widget.TextView;
 
 import com.littlejie.base.BaseActivity;
 import com.littlejie.fragment.R;
 
-public class LifeCircleActivity extends BaseActivity {
+public class SimpleLifeCircleActivity extends BaseActivity {
+
+    private TextView mTvActivityCreated;
 
     @Override
     protected int getPageLayoutID() {
@@ -20,7 +24,7 @@ public class LifeCircleActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-
+        mTvActivityCreated = (TextView) findViewById(R.id.tv_activity_created);
     }
 
     @Override
@@ -73,5 +77,20 @@ public class LifeCircleActivity extends BaseActivity {
     protected void onDestroy() {
         Log.i(TAG, TAG + " onDestroy");
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_fragment1, menu);
+        return true;
+    }
+
+    /**
+     * 用于测试在 Fragment 的 onCreate() 方法中能否对 Activity 的 UI 进行操作
+     *
+     * @param text
+     */
+    public void setActivityCreated(String text) {
+        mTvActivityCreated.setText(text);
     }
 }

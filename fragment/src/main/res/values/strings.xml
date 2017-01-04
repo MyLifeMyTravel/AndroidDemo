@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Fragment</string>
+    <string name="txt_add_to_back_stack">addToBackStack() : %s</string>
 </resources>

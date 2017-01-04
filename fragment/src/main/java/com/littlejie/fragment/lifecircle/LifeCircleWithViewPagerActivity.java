@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 测试 Fragment 与 ViewPager 结合使用时的生命周期。
+ * ViewPager 的加载机制会导致 Fragment 的销毁(onDestroy)与重新创建(onCreateView)
+ */
 public class LifeCircleWithViewPagerActivity extends BaseActivity {
 
     private TabLayout mTabLayout;
@@ -24,7 +28,7 @@ public class LifeCircleWithViewPagerActivity extends BaseActivity {
 
     @Override
     protected int getPageLayoutID() {
-        return R.layout.activity_fragmenr_life_circle;
+        return R.layout.activity_life_circle_with_viewpager;
     }
 
     @Override
